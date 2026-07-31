@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+<script>
+    // Sistem Keamanan Internal EIMS & Dashboard PT. Hinoka Alsindo Tekni
+    function cekPasswordInternal() {
+        let sandi = prompt("AREA INTERNAL KORPORAT\nMasukkan Password Akses Sistem EIMS & Dashboard:");
+        if (sandi !== "Hinoka2030") {
+            alert("Akses Ditolak! Password salah atau dibatalkan.");
+            window.location.href = "utama.html"; // Kembali ke halaman utama publik
+        }
+    }
+    // Jalankan fungsi pengaman saat halaman dimuat
+    cekPasswordInternal();
+</script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem EIMS HINOKA - PT. Hinoka Alsindo Tekni</title>
