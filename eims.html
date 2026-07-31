@@ -5,44 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem EIMS & Arsitektur Korporat - PT. Hinoka Alsindo Tekni</title>
     <script>
-    // Sistem Verifikasi Sesi & Modal Login Profesional Hinoka
-    function cekSesiLogin() {
-        let statusLogin = sessionStorage.getItem("hinoka_auth");
-        if (statusLogin !== "sukses") {
-            // Tampilkan form login kustom saat halaman dimuat
-            document.getElementById("modalLogin").style.display = "flex";
+        function cekSesiLogin() {
+            let statusLogin = sessionStorage.getItem("hinoka_auth");
+            if (statusLogin !== "sukses") {
+                let modal = document.getElementById("modalLogin");
+                if(modal) {
+                    modal.style.display = "flex";
+                }
+            }
         }
-    }
-
-    function prosesLogin(event) {
-        event.preventDefault();
-        let inputSandi = document.getElementById("passwordInput").value;
-        if (inputSandi === "Hinoka2030") {
-            sessionStorage.setItem("hinoka_auth", "sukses");
-            document.getElementById("modalLogin").style.display = "none";
-            location.reload(); // Muat ulang halaman setelah sukses
-        } else {
-            document.getElementById("pesanError").innerText = "Password Salah! Silakan coba lagi.";
+        function prosesLogin(event) {
+            event.preventDefault();
+            let inputSandi = document.getElementById("passwordInput").value;
+            if (inputSandi === "Hinoka2030") {
+                sessionStorage.setItem("hinoka_auth", "sukses");
+                document.getElementById("modalLogin").style.display = "none";
+                location.reload();
+            } else {
+                document.getElementById("pesanError").innerText = "Password Salah! Silakan coba lagi.";
+            }
         }
-    }
-
-    function togglePassword() {
-        let inputField = document.getElementById("passwordInput");
-        if (inputField.type === "password") {
-            inputField.type = "text";
-            document.getElementById("toggleBtn").innerText = "Sembunyikan";
-        } else {
-            inputField.type = "password";
-            document.getElementById("toggleBtn").innerText = "Lihat";
+        function togglePassword() {
+            let inputField = document.getElementById("passwordInput");
+            let btnToggle = document.getElementById("toggleBtn");
+            if (inputField.type === "password") {
+                inputField.type = "text";
+                btnToggle.innerText = "Sembunyikan";
+            } else {
+                inputField.type = "password";
+                btnToggle.innerText = "Lihat";
+            }
         }
-    }
-
-    function logoutInternal() {
-        sessionStorage.removeItem("hinoka_auth");
-        alert("Anda telah keluar dari Area Internal Korporat.");
-        window.location.href = "utama.html";
-    }
-</script>
+        function logoutInternal() {
+            sessionStorage.removeItem("hinoka_auth");
+            alert("Anda telah keluar dari Area Internal Korporat.");
+            window.location.href = "utama.html";
+        }
+    </script>
     <style>
         :root {
             --primary-bg: #0b0f19;
@@ -66,22 +65,24 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 40px;
+            padding: 12px 25px;
             border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 1000;
+            flex-wrap: nowrap;
         }
         .nav-brand {
             display: flex;
             align-items: center;
             font-weight: bold;
-            font-size: 1.1em;
+            font-size: 0.95em;
             color: var(--accent-teal);
+            white-space: nowrap;
         }
         .nav-brand img {
-            height: 40px;
-            margin-right: 12px;
+            height: 35px;
+            margin-right: 8px;
         }
         .nav-links {
             list-style: none;
@@ -91,7 +92,8 @@
             padding: 0;
         }
         .nav-links li {
-            margin-left: 25px;
+            margin-left: 15px;
+            white-space: nowrap;
         }
         .nav-links a {
             color: var(--text-light);
@@ -161,7 +163,7 @@
             background-color: #e74c3c;
             color: white;
             border: none;
-            padding: 8px 16px;
+            padding: 6px 12px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
@@ -180,8 +182,8 @@
         }
     </style>
 </head>
-<body>
-    
+<body onload="cekSesiLogin()">
+
     <!-- Modal Login Kustom Korporat -->
     <div id="modalLogin" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(11, 15, 25, 0.95); z-index: 9999; justify-content: center; align-items: center;">
         <div style="background-color: #131c2e; border: 1px solid #1e293b; padding: 40px; border-radius: 12px; width: 380px; box-shadow: 0 8px 16px rgba(0,0,0,0.5); text-align: center;">
@@ -201,11 +203,9 @@
     </div>
 
     <nav>
-        <!-- (Menu navigasi Anda di bawah sini) -->
-
-    <nav>
         <div class="nav-brand">
-         <img src="logo_hinoka.png.png" alt="Logo PT. Hinoka Alsindo Tekni">
+            <img src="logo_hinoka.png" alt="Logo PT. Hinoka Alsindo Tekni">
+            PT. HINOKA ALSINDO TEKNI
         </div>
         <ul class="nav-links">
             <li><a href="utama.html">Beranda</a></li>
