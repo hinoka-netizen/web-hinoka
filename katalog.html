@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog Mesin & Produk - PT. Hinoka Alsindo Tekni</title>
+    <style>
+        :root {
+            --primary-bg: #0b0f19;
+            --card-bg: #131c2e;
+            --accent-teal: #00b4d8;
+            --accent-green: #2ec4b6;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+        }
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #020617;
+            border-bottom: 2px solid var(--border-color);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--accent-teal);
+            font-weight: bold;
+            font-size: 1.1em;
+            letter-spacing: 1px;
+        }
+        .nav-brand img {
+            height: 35px;
+            width: auto;
+            object-fit: contain;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-links li a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.95em;
+            transition: color 0.3s;
+        }
+        .nav-links li a:hover {
+            color: var(--accent-green);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .page-header h1 {
+            color: var(--accent-teal);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 1.1em;
+        }
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .product-img-container {
+            width: 100%;
+            height: 220px;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            box-sizing: border-box;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .product-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .product-body {
+            padding: 20px;
+        }
+        .product-body h3 {
+            color: var(--accent-green);
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+        .product-body p {
+            color: var(--text-muted);
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        .badge {
+            display: inline-block;
+            background-color: #1e293b;
+            color: var(--accent-teal);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        footer {
+            text-align: center;
+            padding: 30px;
+            background-color: #020617;
+            color: var(--text-muted);
+            font-size: 0.95em;
+            border-top: 1px solid var(--border-color);
+            margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-brand">
+            <img src="logo_hinoka.png.png" alt="Logo PT. Hinoka Alsindo Tekni">
+            PT. HINOKA ALSINDO TEKNI
+        </div>
+        <ul class="nav-links">
+            <li><a href="utama.html">Beranda</a></li>
+            <li><a href="katalog.html" style="color: var(--accent-green); font-weight: bold;">Katalog Mesin</a></li>
+            <li><a href="eims.html">Sistem EIMS</a></li>
+            <li><a href="dashboard.html">Dashboard EIMS</a></li>
+            <li><a href="kontak.html">Kontak</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Katalog Mesin Tepat Guna</h1>
+            <p>Solusi Inovasi Manufaktur Berkualitas Tinggi untuk Sektor Pertanian, Peternakan, dan Pengolahan Limbah</p>
+        </div>
+
+        <div class="catalog-grid">
+            <!-- Produk 1 -->
+            <div class="product-card">
+                <div class="product-img-container">
+                    <img src="kopi.jpg.jpg" alt="Mesin Pengolahan Kopi" class="product-img">
+                </div>
+                <div class="product-body">
+                    <span class="badge">Sektor Pertanian</span>
+                    <h3>Mesin Pengolahan Kopi Terpadu</h3>
+                    <p>Unit mesin mutakhir untuk pengolahan biji kopi mulai dari pengupasan kulit hingga sortir kualitas ekspor berstandar industri optimal.</p>
+                </div>
+            </div>
+
+            <!-- Produk 2 -->
+            <div class="product-card">
+                <div class="product-img-container">
+                    <img src="chopper.jpg.png" alt="Mesin Pencacah Chopper" class="product-img">
+                </div>
+                <div class="product-body">
+                    <span class="badge">Sektor Peternakan</span>
+                    <h3>Mesin Pencacah / Chopper Serbaguna</h3>
+                    <p>Dirancang khusus untuk mencacah rumput, jerami, dan limbah organik secara cepat guna mendukung efisiensi pakan ternak modern.</p>
+                </div>
+            </div>
+
+            <!-- Produk 3 -->
+            <div class="product-card">
+                <div class="product-img-container">
+                    <img src="limbah.jpg.png" alt="Mesin Pengolahan Limbah" class="product-img">
+                </div>
+                <div class="product-body">
+                    <span class="badge">Pengolahan Lingkungan</span>
+                    <h3>Mesin Pengolahan Limbah & Sampah</h3>
+                    <p>Solusi ramah lingkungan untuk pengolahan sampah organik dan anorganik menjadi produk bernilai guna tinggi bagi instansi & wilayah.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 PT. Hinoka Alsindo Tekni. All Rights Reserved. | Katalog Produk Resmi.</p>
+    </footer>
+
+</body>
+</html>
