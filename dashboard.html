@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Executive Operations Dashboard - PT. Hinoka Alsindo Tekni</title>
     <script>
-        // Sistem Sesi Keamanan Internal PT. Hinoka Alsindo Tekni
         function cekSesiLogin() {
             let statusLogin = sessionStorage.getItem("hinoka_auth");
             if (statusLogin !== "sukses") {
@@ -24,6 +23,26 @@
             window.location.href = "utama.html";
         }
         cekSesiLogin();
+
+        // Fungsi Simulasi Kalkulator Skor KPI HBSC
+        function hitungSkorKPI() {
+            let omzetScore = parseFloat(document.getElementById('inputOmzet').value) || 0;
+            let otdScore = parseFloat(document.getElementById('inputOTD').value) || 0;
+            let defectScore = parseFloat(document.getElementById('inputDefect').value) || 0;
+            
+            // Bobot: Financial (35%), Customer (25%), Internal Process (40%)
+            let totalScore = (omzetScore * 0.35) + (otdScore * 0.25) + (defectScore * 0.40);
+            
+            let kategori = "";
+            let warna = "";
+            if (totalScore >= 90) { kategori = "Excellent (Kinerja Luar Biasa)"; warna = "#2ec4b6"; }
+            else if (totalScore >= 80) { kategori = "Very Good (Sangat Baik)"; warna = "#00b4d8"; }
+            else if (totalScore >= 70) { kategori = "Good (Baik)"; warna = "#f1c40f"; }
+            else { kategori = "Need Improvement / Critical"; warna = "#e74c3c"; }
+
+            let hasilDiv = document.getElementById('hasilSimulasi');
+            hasilDiv.innerHTML = `Skor Kinerja Korporat: <strong>${totalScore.toFixed(2)}</strong> | Kategori: <span style="color: ${warna}; font-weight: bold;">${kategori}</span>`;
+        }
     </script>
     <style>
         :root {
@@ -158,7 +177,6 @@
         }
         .status-green { color: var(--accent-green); font-weight: bold; }
         .status-yellow { color: var(--accent-yellow); font-weight: bold; }
-        .status-red { color: var(--accent-red); font-weight: bold; }
         .logout-btn {
             background-color: #e74c3c;
             color: white;
@@ -171,6 +189,34 @@
         }
         .logout-btn:hover {
             background-color: #c0392b;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-light);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: var(--primary-bg);
+            color: var(--text-light);
+        }
+        .calc-btn {
+            background-color: var(--accent-teal);
+            color: var(--primary-bg);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .calc-btn:hover {
+            background-color: var(--accent-green);
         }
         footer {
             text-align: center;
@@ -202,7 +248,7 @@
     <div class="container">
         <div class="page-header">
             <h1>Executive Operations Dashboard</h1>
-            <p>Pusat Kendali Metrik Kinerja, Balanced Scorecard (HBSC), dan CEO War Room</p>
+            <p>Pusat Kendali Metrik Kinerja, Balanced Scorecard (HBSC), & CEO War Room</p>
         </div>
 
         <div class="metrics-grid">
@@ -270,6 +316,25 @@
                     <td><span class="status-yellow">🟡 Monitoring</span></td>
                 </tr>
             </table>
+        </div>
+
+        <div class="card">
+            <h2>Simulasi Kalkulator Skor Kinerja (HBSC)</h2>
+            <p>Uji pencapaian skor korporat berdasarkan bobot perspektif strategis perusahaan.</p>
+            <div class="form-group">
+                <label>Nilai Pencapaian Finansial / Omzet (Skor 0-100):</label>
+                <input type="number" id="inputOmzet" value="95">
+            </div>
+            <div class="form-group">
+                <label>Nilai Pencapaian Customer / OTD (Skor 0-100):</label>
+                <input type="number" id="inputOTD" value="98">
+            </div>
+            <div class="form-group">
+                <label>Nilai Pencapaian Internal Process / Defect (Skor 0-100):</label>
+                <input type="number" id="inputDefect" value="92">
+            </div>
+            <button class="calc-btn" onclick="hitungSkorKPI()">Hitung Skor Kinerja Korporat</button>
+            <p id="hasilSimulasi" style="margin-top: 15px; font-size: 1.1em;"></p>
         </div>
 
         <div class="card">
