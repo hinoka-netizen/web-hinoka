@@ -5,25 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem EIMS & Arsitektur Korporat - PT. Hinoka Alsindo Tekni</title>
     <script>
-        function cekSesiLogin() {
-            let statusLogin = sessionStorage.getItem("hinoka_auth");
-            if (statusLogin !== "sukses") {
-                let sandi = prompt("AREA INTERNAL KORPORAT\nMasukkan Password Akses Sistem EIMS & Dashboard:");
-                if (sandi === "Hinoka2030") {
-                    sessionStorage.setItem("hinoka_auth", "sukses");
-                } else {
-                    alert("Akses Ditolak! Password salah atau dibatalkan.");
-                    window.location.href = "utama.html";
-                }
-            }
+    // Sistem Verifikasi Sesi & Modal Login Profesional Hinoka
+    function cekSesiLogin() {
+        let statusLogin = sessionStorage.getItem("hinoka_auth");
+        if (statusLogin !== "sukses") {
+            // Tampilkan form login kustom saat halaman dimuat
+            document.getElementById("modalLogin").style.display = "flex";
         }
-        function logoutInternal() {
-            sessionStorage.removeItem("hinoka_auth");
-            alert("Anda telah keluar dari Area Internal Korporat.");
-            window.location.href = "utama.html";
+    }
+
+    function prosesLogin(event) {
+        event.preventDefault();
+        let inputSandi = document.getElementById("passwordInput").value;
+        if (inputSandi === "Hinoka2030") {
+            sessionStorage.setItem("hinoka_auth", "sukses");
+            document.getElementById("modalLogin").style.display = "none";
+            location.reload(); // Muat ulang halaman setelah sukses
+        } else {
+            document.getElementById("pesanError").innerText = "Password Salah! Silakan coba lagi.";
         }
-        cekSesiLogin();
-    </script>
+    }
+
+    function togglePassword() {
+        let inputField = document.getElementById("passwordInput");
+        if (inputField.type === "password") {
+            inputField.type = "text";
+            document.getElementById("toggleBtn").innerText = "Sembunyikan";
+        } else {
+            inputField.type = "password";
+            document.getElementById("toggleBtn").innerText = "Lihat";
+        }
+    }
+
+    function logoutInternal() {
+        sessionStorage.removeItem("hinoka_auth");
+        alert("Anda telah keluar dari Area Internal Korporat.");
+        window.location.href = "utama.html";
+    }
+</script>
     <style>
         :root {
             --primary-bg: #0b0f19;
@@ -162,6 +181,27 @@
     </style>
 </head>
 <body>
+    
+    <!-- Modal Login Kustom Korporat -->
+    <div id="modalLogin" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(11, 15, 25, 0.95); z-index: 9999; justify-content: center; align-items: center;">
+        <div style="background-color: #131c2e; border: 1px solid #1e293b; padding: 40px; border-radius: 12px; width: 380px; box-shadow: 0 8px 16px rgba(0,0,0,0.5); text-align: center;">
+            <h2 style="color: #00b4d8; margin-bottom: 10px; font-size: 1.5em;">AREA INTERNAL KORPORAT</h2>
+            <p style="color: #94a3b8; font-size: 0.9em; margin-bottom: 25px;">Masukkan Password Akses Sistem EIMS & Dashboard PT. Hinoka Alsindo Tekni</p>
+            
+            <form onsubmit="prosesLogin(event)">
+                <div style="position: relative; margin-bottom: 15px;">
+                    <input type="password" id="passwordInput" placeholder="Masukkan Password" required style="width: 100%; padding: 12px 50px 12px 15px; border-radius: 6px; border: 1px solid #1e293b; background-color: #0b0f19; color: #f1f5f9; box-sizing: border-box; font-size: 1em;">
+                    <button type="button" id="toggleBtn" onclick="togglePassword()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #00b4d8; cursor: pointer; font-weight: bold; font-size: 0.85em;">Lihat</button>
+                </div>
+                <div id="pesanError" style="color: #e74c3c; font-size: 0.85em; margin-bottom: 15px; font-weight: bold;"></div>
+                <button type="submit" style="width: 100%; padding: 12px; background-color: #00b4d8; color: #0b0f19; border: none; border-radius: 6px; font-weight: bold; font-size: 1em; cursor: pointer;">Masuk Sistem</button>
+                <button type="button" onclick="window.location.href='utama.html'" style="width: 100%; padding: 10px; background-color: transparent; color: #94a3b8; border: none; margin-top: 10px; cursor: pointer;">Kembali ke Beranda</button>
+            </form>
+        </div>
+    </div>
+
+    <nav>
+        <!-- (Menu navigasi Anda di bawah sini) -->
 
     <nav>
         <div class="nav-brand">
