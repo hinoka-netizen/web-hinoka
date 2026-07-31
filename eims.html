@@ -1,38 +1,30 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<script>
-    // Sistem Sesi Keamanan Internal PT. Hinoka Alsindo Tekni
-    function cekSesiLogin() {
-        // Cek apakah sudah login sebelumnya dalam sesi aktif
-        let statusLogin = sessionStorage.getItem("hinoka_auth");
-        
-        if (statusLogin !== "sukses") {
-            let sandi = prompt("AREA INTERNAL KORPORAT\nMasukkan Password Akses Sistem EIMS & Dashboard:");
-            if (sandi === "Hinoka2030") {
-                // Simpan status login ke memori browser
-                sessionStorage.setItem("hinoka_auth", "sukses");
-            } else {
-                alert("Akses Ditolak! Password salah atau dibatalkan.");
-                window.location.href = "utama.html"; // Kembali ke halaman utama publik
-            }
-        }
-    }
-
-    // Fungsi untuk Logout Manual
-    function logoutInternal() {
-        sessionStorage.removeItem("hinoka_auth");
-        alert("Anda telah keluar dari Area Internal Korporat.");
-        window.location.href = "utama.html";
-    }
-
-    // Jalankan pemeriksaan sesi saat halaman dimuat
-    cekSesiLogin();
-</script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem EIMS HINOKA - PT. Hinoka Alsindo Tekni</title>
+    <title>Sistem EIMS & HBSC - PT. Hinoka Alsindo Tekni</title>
+    <script>
+        // Sistem Sesi Keamanan Internal PT. Hinoka Alsindo Tekni
+        function cekSesiLogin() {
+            let statusLogin = sessionStorage.getItem("hinoka_auth");
+            if (statusLogin !== "sukses") {
+                let sandi = prompt("AREA INTERNAL KORPORAT\nMasukkan Password Akses Sistem EIMS & Dashboard:");
+                if (sandi === "Hinoka2030") {
+                    sessionStorage.setItem("hinoka_auth", "sukses");
+                } else {
+                    alert("Akses Ditolak! Password salah atau dibatalkan.");
+                    window.location.href = "utama.html";
+                }
+            }
+        }
+        function logoutInternal() {
+            sessionStorage.removeItem("hinoka_auth");
+            alert("Anda telah keluar dari Area Internal Korporat.");
+            window.location.href = "utama.html";
+        }
+        cekSesiLogin();
+    </script>
     <style>
         :root {
             --primary-bg: #0b0f19;
@@ -46,17 +38,18 @@
         body {
             background-color: var(--primary-bg);
             color: var(--text-light);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
             padding: 0;
+            line-height: 1.6;
         }
         nav {
-            background-color: #020617;
-            border-bottom: 2px solid var(--border-color);
-            padding: 15px 30px;
+            background-color: rgba(19, 28, 46, 0.95);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 15px 40px;
+            border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -64,92 +57,106 @@
         .nav-brand {
             display: flex;
             align-items: center;
-            gap: 12px;
-            color: var(--accent-teal);
             font-weight: bold;
             font-size: 1.1em;
-            letter-spacing: 1px;
+            color: var(--accent-teal);
         }
         .nav-brand img {
-            height: 35px;
-            width: auto;
-            object-fit: contain;
+            height: 40px;
+            margin-right: 12px;
         }
         .nav-links {
             list-style: none;
             display: flex;
-            gap: 20px;
+            align-items: center;
             margin: 0;
             padding: 0;
         }
-        .nav-links li a {
+        .nav-links li {
+            margin-left: 25px;
+        }
+        .nav-links a {
             color: var(--text-light);
             text-decoration: none;
-            font-size: 0.95em;
-            transition: color 0.3s;
+            font-weight: 500;
+            transition: color 0.2s;
         }
-        .nav-links li a:hover {
-            color: var(--accent-green);
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent-teal);
         }
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 40px auto;
             padding: 0 20px;
         }
         .page-header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 45px;
         }
         .page-header h1 {
+            font-size: 2.5em;
             color: var(--accent-teal);
-            font-size: 2.3em;
             margin-bottom: 10px;
         }
-        .page-header p {
-            color: var(--text-muted);
-            font-size: 1.1em;
-        }
-        .doc-card {
+        .card {
             background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 35px;
-            border-top: 4px solid var(--accent-green);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
             margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
-        .doc-card h3 {
-            color: var(--accent-green);
+        h2 {
+            color: var(--accent-teal);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
             margin-top: 0;
-            font-size: 1.4em;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 15px;
         }
-        .doc-content {
-            line-height: 1.8;
-            color: var(--text-muted);
-            font-size: 1.05em;
-        }
-        .doc-content strong {
-            color: var(--text-light);
-        }
-        .feature-list {
-            margin-top: 20px;
+        ul {
             padding-left: 20px;
         }
-        .feature-list li {
+        li {
             margin-bottom: 10px;
             color: var(--text-muted);
         }
-        .feature-list li strong {
+        li strong {
+            color: var(--text-light);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: rgba(0, 180, 216, 0.1);
             color: var(--accent-teal);
+        }
+        td {
+            color: var(--text-muted);
+        }
+        .logout-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .logout-btn:hover {
+            background-color: #c0392b;
         }
         footer {
             text-align: center;
             padding: 30px;
-            background-color: #020617;
             color: var(--text-muted);
-            font-size: 0.95em;
+            font-size: 0.9em;
             border-top: 1px solid var(--border-color);
             margin-top: 50px;
         }
@@ -159,44 +166,68 @@
 
     <nav>
         <div class="nav-brand">
-            <img src="logo_hinoka.png.png" alt="Logo PT. Hinoka Alsindo Tekni">
+            <img src="logo_hinoka.png" alt="Logo">
             PT. HINOKA ALSINDO TEKNI
         </div>
         <ul class="nav-links">
             <li><a href="utama.html">Beranda</a></li>
             <li><a href="katalog.html">Katalog Mesin</a></li>
-            <li><a href="eims.html" style="color: var(--accent-green); font-weight: bold;">Sistem EIMS</a></li>
+            <li><a href="eims.html" class="active" style="color: var(--accent-teal);">Sistem EIMS</a></li>
             <li><a href="dashboard.html">Dashboard EIMS</a></li>
             <li><a href="kontak.html">Kontak</a></li>
-            <button onclick="logoutInternal()" style="background-color: #e74c3c; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-left: 10px;">Logout</button>
+            <li><button class="logout-btn" onclick="logoutInternal()">Logout</button></li>
         </ul>
     </nav>
 
     <div class="container">
         <div class="page-header">
             <h1>Enterprise Integrated Management System (EIMS)</h1>
-            <p>Pusat Dokumen Induk, Tata Kelola Manufaktur, dan Standar Operasional Perusahaan</p>
+            <p>Pusat Dokumen Induk, Tata Kelola Manufaktur, HBSC, HEFS, dan Standar Operasional Perusahaan</p>
         </div>
 
-        <div class="doc-card">
-            <h3>Dokumen Induk Sistem EIMS HINOKA</h3>
-            <div class="doc-content">
-                <p>Selamat datang di pusat dokumentasi resmi <strong>EIMS HINOKA</strong>. Sistem Manajemen Terpadu ini dirancang khusus untuk mengintegrasikan seluruh lini operasional PT. Hinoka Alsindo Tekni mulai dari perancangan teknik mesin, pengadaan bahan baku, proses produksi di workshop Bekasi, hingga distribusi ke seluruh instansi dan mitra di Nusantara.</p>
-                
-                <p><strong>Pilar Utama Sistem EIMS HINOKA:</strong></p>
-                <ul class="feature-list">
-                    <li><strong>Manajemen Mutu Produksi:</strong> Standarisasi kualitas kontrol setiap unit mesin tepat guna agar memenuhi spesifikasi teknis pemerintahan dan industri.</li>
-                    <li><strong>Efisiensi Rantai Pasok:</strong> Pengelolaan inventaris material secara real-time guna memastikan ketepatan waktu pengerjaan pesanan.</li>
-                    <li><strong>Transparansi & Akuntabilitas:</strong> Penyediaan data operasional yang terintegrasi langsung dengan Executive Operations Dashboard perusahaan.</li>
-                </ul>
+        <div class="card">
+            <h2>Arsitektur Utama EIMS & HBSC Hinoka</h2>
+            <p>Sistem Manajemen Terpadu PT. Hinoka Alsindo Tekni dirancang untuk menerjemahkan Visi menjadi strategi nyata yang terukur melalui kerangka kerja <strong>Balanced Scorecard (HBSC)</strong> dan <strong>ERP Functional Specification (HEFS)</strong>.</p>
+            <ul>
+                <li><strong>Visi & Strategi:</strong> Menyelaraskan seluruh departemen dengan tujuan perusahaan yang berkelanjutan.</li>
+                <li><strong>4 Perspektif Utama:</strong> Financial, Customer, Internal Business Process, serta Learning & Growth.</li>
+                <li><strong>Cascading KPI:</strong> Dari tingkat Direktur, Kepala Departemen, Section, hingga KPI Individual lintas fungsi.</li>
+            </ul>
+        </div>
 
-                <p style="margin-top: 25px;">Dokumen ini bersifat resmi dan menjadi pedoman utama bagi seluruh divisi di bawah naungan PT. Hinoka Alsindo Tekni dalam menjalankan misi menghadirkan inovasi teknologi manufaktur yang bermanfaat lintas generasi.</p>
-            </div>
+        <div class="card">
+            <h2>Matriks Dokumen Terkendali EIMS</h2>
+            <table>
+                <tr>
+                    <th>Kode Dokumen</th>
+                    <th>Nama Modul / Sistem</th>
+                    <th>Fokus Utama</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>HBSC-001</td>
+                    <td>Hinoka Balanced Scorecard</td>
+                    <td>Manajemen Kinerja & 4 Perspektif Strategis</td>
+                    <td><strong style="color: var(--accent-green);">Aktif (Terkendali)</strong></td>
+                </tr>
+                <tr>
+                    <td>HEFS-001</td>
+                    <td>ERP Functional Specification</td>
+                    <td>Blueprint Digitalisasi Proses & Master Data</td>
+                    <td><strong style="color: var(--accent-green);">Aktif (Terkendali)</strong></td>
+                </tr>
+                <tr>
+                    <td>HBIDM-001</td>
+                    <td>Business Intelligence & Dashboard</td>
+                    <td>CEO War Room & Early Warning System</td>
+                    <td><strong style="color: var(--accent-green);">Aktif (Terkendali)</strong></td>
+                </tr>
+            </table>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2026 PT. Hinoka Alsindo Tekni. All Rights Reserved. | EIMS HINOKA System.</p>
+        &copy; 2026 PT. Hinoka Alsindo Tekni. All Rights Reserved. Enterprise Performance Management System.
     </footer>
 
 </body>
