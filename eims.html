@@ -185,10 +185,16 @@
 <body onload="cekSesiLogin()">
 
     <!-- Modal Login Kustom Korporat -->
-    <div id="modalLogin" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(11, 15, 25, 0.95); z-index: 9999; justify-content: center; align-items: center;">
-        <div style="background-color: #131c2e; border: 1px solid #1e293b; padding: 40px; border-radius: 12px; width: 380px; box-shadow: 0 8px 16px rgba(0,0,0,0.5); text-align: center;">
-            <h2 style="color: #00b4d8; margin-bottom: 10px; font-size: 1.5em;">AREA INTERNAL KORPORAT</h2>
-            <p style="color: #94a3b8; font-size: 0.9em; margin-bottom: 25px;">Masukkan Password Akses Sistem EIMS & Dashboard PT. Hinoka Alsindo Tekni</p>
+  <div id="modalLogin" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(11, 15, 25, 0.95); z-index: 9999; justify-content: center; align-items: center;">
+        <div style="background-color: #131c2e; border: 1px solid #1e293b; padding: 40px; border-radius: 12px; width: 420px; box-shadow: 0 8px 16px rgba(0,0,0,0.5); text-align: center;">
+            <h2 style="color: #00b4d8; margin-bottom: 10px; font-size: 1.4em;">AREA INTERNAL KORPORAT</h2>
+            
+            <!-- Teks 3 Baris Rapi Sesuai Permintaan -->
+            <div style="color: #94a3b8; font-size: 0.95em; margin-bottom: 25px; line-height: 1.5;">
+                <div>Masukkan Password</div>
+                <div>Akses Enterprise Integrated Management System</div>
+                <div style="color: #00b4d8; font-weight: bold;">Dashboard HINOKA</div>
+            </div>
             
             <form onsubmit="prosesLogin(event)">
                 <div style="position: relative; margin-bottom: 15px;">

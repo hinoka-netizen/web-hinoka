@@ -5,47 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pusat Kemitraan Distributor & Agen - PT. Hinoka Alsindo Tekni</title>
     <script>
-        function cekSesiLogin() {
-            let statusLogin = sessionStorage.getItem("hinoka_auth");
-            if (statusLogin !== "sukses") {
-                let modal = document.getElementById("modalLogin");
-                if(modal) {
-                    modal.style.display = "flex";
-                }
-            }
-        }
-        function prosesLogin(event) {
+        function kirimPendaftaran(event) {
             event.preventDefault();
-            let inputSandi = document.getElementById("passwordInput").value;
-            if (inputSandi === "Hinoka2030") {
-                sessionStorage.setItem("hinoka_auth", "sukses");
-                document.getElementById("modalLogin").style.display = "none";
-                location.reload();
-            } else {
-                document.getElementById("pesanError").innerText = "Password Salah! Silakan coba lagi.";
-            }
-        }
-        function togglePassword() {
-            let inputField = document.getElementById("passwordInput");
-            let btnToggle = document.getElementById("toggleBtn");
-            if (inputField.type === "password") {
-                inputField.type = "text";
-                btnToggle.innerText = "Sembunyikan";
-            } else {
-                inputField.type = "password";
-                btnToggle.innerText = "Lihat";
-            }
+            alert("Terima kasih! Formulir pendaftaran Kemitraan Distributor & Agen PT. Hinoka Alsindo Tekni telah terkirim. Tim Marketing kami akan segera menghubungi Anda.");
+            event.target.reset();
         }
         function logoutInternal() {
             sessionStorage.removeItem("hinoka_auth");
             alert("Anda telah keluar dari Area Internal Korporat.");
             window.location.href = "utama.html";
-        }
-
-        function kirimPendaftaran(event) {
-            event.preventDefault();
-            alert("Terima kasih! Formulir pendaftaran Kemitraan Distributor & Agen PT. Hinoka Alsindo Tekni telah terkirim. Tim Marketing kami akan segera menghubungi Anda.");
-            event.target.reset();
         }
     </script>
     <style>
@@ -107,7 +75,10 @@
             font-weight: 500;
             transition: color 0.2s;
         }
-        .nav-links a:hover, .nav-links a.active {
+        .nav-links a:hover {
+            color: var(--accent-teal);
+        }
+        .nav-links a.active {
             color: var(--accent-teal);
         }
         .container {
@@ -221,42 +192,22 @@
         }
     </style>
 </head>
-<body onload="cekSesiLogin()">
-
-    <!-- Modal Login Kustom Korporat -->
-    <div id="modalLogin" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(11, 15, 25, 0.95); z-index: 9999; justify-content: center; align-items: center;">
-        <div style="background-color: #131c2e; border: 1px solid #1e293b; padding: 40px; border-radius: 12px; width: 380px; box-shadow: 0 8px 16px rgba(0,0,0,0.5); text-align: center;">
-            <h2 style="color: #00b4d8; margin-bottom: 10px; font-size: 1.5em;">AREA INTERNAL KORPORAT</h2>
-            <p style="color: #94a3b8; font-size: 0.9em; margin-bottom: 25px;">Masukkan Password Akses Sistem EIMS & Dashboard PT. Hinoka Alsindo Tekni</p>
-            
-            <form onsubmit="prosesLogin(event)">
-                <div style="position: relative; margin-bottom: 15px;">
-                    <input type="password" id="passwordInput" placeholder="Masukkan Password" required style="width: 100%; padding: 12px 50px 12px 15px; border-radius: 6px; border: 1px solid #1e293b; background-color: #0b0f19; color: #f1f5f9; box-sizing: border-box; font-size: 1em;">
-                    <button type="button" id="toggleBtn" onclick="togglePassword()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #00b4d8; cursor: pointer; font-weight: bold; font-size: 0.85em;">Lihat</button>
-                </div>
-                <div id="pesanError" style="color: #e74c3c; font-size: 0.85em; margin-bottom: 15px; font-weight: bold;"></div>
-                <button type="submit" style="width: 100%; padding: 12px; background-color: #00b4d8; color: #0b0f19; border: none; border-radius: 6px; font-weight: bold; font-size: 1em; cursor: pointer;">Masuk Sistem</button>
-                <button type="button" onclick="window.location.href='utama.html'" style="width: 100%; padding: 10px; background-color: transparent; color: #94a3b8; border: none; margin-top: 10px; cursor: pointer;">Kembali ke Beranda</button>
-            </form>
-        </div>
-    </div>
+<body>
 
     <nav>
-        <nav>
-    <div class="nav-brand">
-        <img src="logo_hinoka.png.png" alt="Logo PT. Hinoka Alsindo Tekni">
-        PT. HINOKA ALSINDO TEKNI
-    </div>
-    <ul class="nav-links">
-        <li><a href="utama.html">Beranda</a></li>
-        <li><a href="katalog.html">Katalog Mesin</a></li>
-        <li><a href="agen-distributor.html" style="color: var(--accent-teal);">Kemitraan</a></li>
-        <li><a href="eims.html">Sistem EIMS</a></li>
-        <li><a href="dashboard.html">Dashboard EIMS</a></li>
-        <li><a href="kontak.html">Kontak</a></li>
-        <li><button class="logout-btn" onclick="logoutInternal()">Logout</button></li>
-    </ul>
-</nav>
+        <div class="nav-brand">
+            <img src="logo_hinoka.png" alt="Logo PT. Hinoka Alsindo Tekni">
+            PT. HINOKA ALSINDO TEKNI
+        </div>
+        <ul class="nav-links">
+            <li><a href="utama.html">Beranda</a></li>
+            <li><a href="katalog.html">Katalog Mesin</a></li>
+            <li><a href="agen-distributor.html" class="active">Kemitraan</a></li>
+            <li><a href="eims.html">Sistem EIMS</a></li>
+            <li><a href="dashboard.html">Dashboard EIMS</a></li>
+            <li><a href="kontak.html">Kontak</a></li>
+            <li><button class="logout-btn" onclick="logoutInternal()">Logout</button></li>
+        </ul>
     </nav>
 
     <div class="container">
@@ -317,7 +268,7 @@
                 <div class="form-group">
                     <label>Nomor WhatsApp / Telepon Aktif:</label>
                     <input type="tel" placeholder="Contoh: 081234567890" required>
-                    </div>
+                </div>
                 <div class="form-group">
                     <label>Email Resmi:</label>
                     <input type="email" placeholder="email@domain.com" required>
