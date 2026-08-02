@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Latihan Koding 2: Kalkulator Komisi Mitra - PT. Hinoka Alsindo Tekni</title>
+    <style>
+        /* CSS: Desain Tampilan Korporat */
+        body {
+            background-color: #0b0f19;
+            color: #f1f5f9;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+        .card-latihan {
+            background-color: #131c2e;
+            border: 1px solid #1e293b;
+            padding: 30px;
+            border-radius: 12px;
+            width: 400px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+        }
+        h2 {
+            color: #00b4d8;
+            font-size: 1.4em;
+            margin-top: 0;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #94a3b8;
+            font-size: 0.9em;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #1e293b;
+            background-color: #0b0f19;
+            color: #f1f5f9;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+        button {
+            background-color: #00b4d8;
+            color: #0b0f19;
+            border: none;
+            padding: 12px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1em;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: #2ec4b6;
+        }
+        .hasil-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(0, 180, 216, 0.1);
+            border: 1px solid #00b4d8;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            color: #2ec4b6;
+        }
+    </style>
+    <script>
+        // JAVASCRIPT: Rumus Hitung Matematika & Logika
+        function hitungKomisi() {
+            // Mengambil angka dari input HTML
+            let jumlahUnit = parseFloat(document.getElementById("inputUnit").value) || 0;
+            let hargaPerUnit = parseFloat(document.getElementById("inputHarga").value) || 0;
+            
+            // Rumus Bisnis: Total Penjualan = Unit x Harga
+            let totalPenjualan = jumlahUnit * hargaPerUnit;
+            
+            // Rumus Komisi Agen: 5% dari Total Penjualan
+            let komisiAgen = totalPenjualan * 0.05;
+            
+            // Menampilkan hasil ke layar HTML dengan format Rupiah
+            let formatRupiah = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(komisiAgen);
+            let formatTotal = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(totalPenjualan);
+            
+            document.getElementById("teksHasil").innerHTML = 
+                "Total Penjualan: " + formatTotal + "<br>" +
+                "Estimasi Komisi Agen (5%): <span style='color: #00b4d8;'>" + formatRupiah + "</span>";
+        }
+    </script>
+</head>
+<body>
+
+    <div class="card-latihan">
+        <h2>Simulasi Komisi Agen Mesin</h2>
+        
+        <div class="form-group">
+            <label>Jumlah Unit Mesin Terjual:</label>
+            <input type="number" id="inputUnit" value="2">
+        </div>
+        
+        <div class="form-group">
+            <label>Harga Satuan Mesin (Rp):</label>
+            <input type="number" id="inputHarga" value="50000000">
+        </div>
+        
+        <button onclick="hitungKomisi()">Hitung Komisi Otomatis</button>
+        
+        <div class="hasil-box" id="teksHasil">
+            Masukkan data lalu klik tombol hitung di atas.
+        </div>
+    </div>
+
+</body>
+</html>
