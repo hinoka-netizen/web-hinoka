@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Halaman Latihan Belajar Koding - PT. Hinoka Alsindo Tekni</title>
+    <style>
+        /* CSS: Desain Tampilan */
+        body {
+            background-color: #0b0f19;
+            color: #f1f5f9;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .kotak-latihan {
+            background-color: #131c2e;
+            border: 1px solid #00b4d8;
+            padding: 30px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        button {
+            background-color: #00b4d8;
+            color: #0b0f19;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        // JAVASCRIPT: Logika Interaktif
+        function sapaPimpinan() {
+            let nama = document.getElementById("namaInput").value;
+            let pesanHasil = document.getElementById("hasilPesan");
+            
+            if(nama.trim() !== "") {
+                pesanHasil.innerText = "Selamat belajar koding, " + nama + "! Anda pasti bisa menguasainya.";
+                pesanHasil.style.color = "#2ec4b6";
+            } else {
+                pesanHasil.innerText = "Silakan masukkan nama Anda terlebih dahulu.";
+                pesanHasil.style.color = "#e74c3c";
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <!-- HTML: Struktur Elemen Tampil -->
+    <div class="kotak-latihan">
+        <h2>Modul Praktik Mandiri Koding</h2>
+        <p>Masukkan nama Anda untuk menguji interaksi JavaScript:</p>
+        
+        <input type="text" id="namaInput" placeholder="Ketik nama Anda di sini..." style="padding: 8px; width: 250px; border-radius: 5px; border: 1px solid #1e293b;">
+        <br><br>
+        <button onclick="sapaPimpinan()">Jalankan Sistem</button>
+        
+        <p id="hasilPesan" style="margin-top: 20px; font-weight: bold;"></p>
+    </div>
+
+</body>
+</html>
