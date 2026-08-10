@@ -12,11 +12,20 @@
         // Cek Sesi Login (Keamanan)
         function cekSesiLogin() {
             const statusLogin = sessionStorage.getItem("hinoka_auth_pro");
+            const userAkses = sessionStorage.getItem("hinoka_user");
+            
             if (statusLogin !== "verified_pro") {
+                // Jika belum login, TAMPILKAN MODAL LOGIN
                 document.getElementById("modalLoginPro").style.display = "flex";
+                // SEMBUNYIKAN KONTEN HEMS
+                document.getElementById("hemsKitabInduk").style.display = "none";
+                document.getElementById("navHEMS").style.display = "none";
             } else {
-                // Jika sudah login, tampilkan nama user di navigasi
-                document.getElementById("namaUserTampil").innerText = "Hai, Direksi";
+                // Jika sudah login, TAMPILKAN KONTEN HEMS
+                document.getElementById("modalLoginPro").style.display = "none";
+                document.getElementById("hemsKitabInduk").style.display = "block";
+                document.getElementById("navHEMS").style.display = "flex";
+                document.getElementById("namaUserTampil").innerText = "Hai, " + userAkses;
             }
         }
 
@@ -27,10 +36,13 @@
             const errorMsg = document.getElementById("pesanErrorPro");
 
             if (inputSandi === "Hinoka2030") {
+                // Login Sukses
                 sessionStorage.setItem("hinoka_auth_pro", "verified_pro");
+                sessionStorage.setItem("hinoka_user", "Direksi / Admin");
                 document.getElementById("modalLoginPro").style.display = "none";
-                location.reload();
+                location.reload(); // Muat ulang untuk menampilkan konten
             } else {
+                // Login Gagal
                 errorMsg.innerText = "Akses Ditolak! Kredensial tidak valid.";
                 document.getElementById("passwordInputPro").value = "";
             }
@@ -173,7 +185,7 @@
             flex-direction: column;
         }
         .volume-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-50px);
             box-shadow: 0 10px 20px rgba(0,180,216,0.15);
             border-color: var(--accent-teal);
         }
@@ -261,58 +273,88 @@
             background-color: rgba(19, 28, 46, 0.5);
         }
 
-        /* MODAL LOGIN PRO */
+        /* MODAL LOGIN PRO (DIPERBAIKI) */
         #modalLoginPro {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(11, 15, 25, 0.98); z-index: 9999;
-            justify-content: center; align-items: center;
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(11, 15, 25, 0.98); 
+            z-index: 9999; 
+            justify-content: center; 
+            align-items: center;
         }
         .login-box-pro {
-            background-color: #131c2e; border: 1px solid #1e293b;
-            padding: 50px; border-radius: 16px; width: 420px;
-            box-shadow: 0 12px 24px rgba(0,0,0,0.6); text-align: center;
+            background-color: #131c2e; 
+            border: 1px solid #1e293b; 
+            padding: 50px; 
+            border-radius: 16px; 
+            width: 420px; 
+            box-shadow: 0 12px 24px rgba(0,0,0,0.6); 
+            text-align: center;
         }
         .login-box-pro h2 {
-            color: #00b4d8; margin-bottom: 10px; font-size: 1.8em;
-            text-transform: uppercase; letter-spacing: 1px;
+            color: #00b4d8; 
+            margin-bottom: 10px; 
+            font-size: 1.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         .login-instr {
-            color: #94a3b8; font-size: 0.95em; margin-bottom: 30px; line-height: 1.5;
+            color: #94a3b8; 
+            font-size: 0.95em; 
+            margin-bottom: 30px; 
+            line-height: 1.5;
         }
-        .form-field-pro { position: relative; margin-bottom: 20px; }
+        .form-field-pro {
+            position: relative; 
+            margin-bottom: 20px;
+        }
         .form-field-pro input {
-            width: 100%; padding: 15px 60px 15px 20px;
-            border-radius: 8px; border: 1px solid #1e293b;
-            background-color: #0b0f19; color: #f1f5f9; box-sizing: border-box;
+            width: 100%; 
+            padding: 15px 60px 15px 20px; 
+            border-radius: 8px; 
+            border: 1px solid #1e293b; 
+            background-color: #0b0f19; 
+            color: #f1f5f9; 
+            box-sizing: border-box; 
             font-size: 1.1em;
         }
+        .form-field-pro input:focus {
+            outline: none;
+            border-color: #00b4d8;
+        }
         .toggle-pass-pro {
-            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-            background: none; border: none; color: #00b4d8; cursor: pointer;
-            font-weight: bold; font-size: 0.85em; text-transform: uppercase;
+            position: absolute; 
+            right: 15px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            background: none; 
+            border: none; 
+            color: #00b4d8; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 0.85em;
+            text-transform: uppercase;
         }
         .error-msg-pro {
-            color: #e74c3c; font-size: 0.9em; margin-bottom: 20px;
-            font-weight: 600; min-height: 1.2em;
+            color: #e74c3c; 
+            font-size: 0.9em; 
+            margin-bottom: 20px; 
+            font-weight: 600; 
+            min-height: 1.2em;
         }
         .submit-login-pro {
-            width: 100%; padding: 16px; background-color: #00b4d8;
-            color: #0b0f19; border: none; border-radius: 8px; font-weight: bold;
-            font-size: 1.1em; cursor: pointer; text-transform: uppercase;
-            letter-spacing: 1px; transition: background 0.3s;
-        }
-        .submit-login-pro:hover { background-color: #2ec4b6; }
-        .back-home-pro {
-            width: 100%; padding: 12px; background-color: transparent;
-            color: #94a3b8; border: none; margin-top: 15px; cursor: pointer;
-            font-size: 0.9em; text-decoration: underline;
-        }
-    </style>
-</head>
-<body onload="cekSesiLogin()">
-
-    <!-- MODAL LOGIN PRO -->
-    <div id="modalLoginPro">
-        <div class="login-box-pro">
-            <h2>Area Korporat</h2>
-            <div class="login-
+            width: 100%; 
+            padding: 16px; 
+            background-color: #00b4d8; 
+            color: #0b0f19; 
+            border: none; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            font-size: 1.1em; 
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing:
