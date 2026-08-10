@@ -6,14 +6,13 @@
     <title>EIMS Korporat - PT. Hinoka Alsindo Tekni</title>
     <script>
         // ============================================================
-        // SISTEM KEAMANAN KORPORAT - HINOKA EIMS V2
-        // Password terenkripsi menggunakan SHA-256.
+        // SISTEM KEAMANAN KORPORAT - HINOKA EIMS V2.1
         // ============================================================
 
         // HASH SHA-256 YANG TELAH DIVERIFIKASI UNTUK "Hinoka2030"
         const HINOKA_PASSWORD_HASH = "4b57c4a2e6082922d657a9433ff8ff866558e7a8386e25c8696753cb9fc585f6"; 
 
-        // Fungsi utilitas untuk mengubah teks menjadi Hash SHA-256 (Asinkron)
+        // Fungsi utilitas SHA-256
         async function generateSHA256(text) {
             const msgBuffer = new TextEncoder().encode(text);
             const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -25,13 +24,15 @@
         // Fungsi Cek Sesi Login
         function cekSesiLogin() {
             const statusLogin = sessionStorage.getItem("hinoka_auth_pro");
-            
             if (statusLogin !== "verified_pro") {
                 document.getElementById("modalLoginPro").style.display = "flex";
+            } else {
+                 // Jika sudah login, tampilkan nama user di navigasi (opsional, nanti kita aktifkan)
+                 // document.getElementById("namaUserTampil").innerText = "Hai, Direksi";
             }
         }
 
-        // Fungsi Proses Login (Versi Profesional)
+        // Fungsi Proses Login Korporat
         async function prosesLoginPro(event) {
             event.preventDefault();
             const inputSandi = document.getElementById("passwordInputPro").value;
@@ -44,24 +45,35 @@
             const inputHash = await generateSHA256(inputSandi);
 
             if (inputHash === HINOKA_PASSWORD_HASH) {
-                // Login Sukses
                 sessionStorage.setItem("hinoka_auth_pro", "verified_pro");
                 document.getElementById("modalLoginPro").style.display = "none";
-                location.reload(); // Muat ulang halaman utama EIMS
+                location.reload();
             } else {
-                // Login Gagal
                 errorMsg.innerText = "Akses Ditolak! Kredensial tidak valid.";
                 btnSubmit.innerText = "Masuk Sistem";
                 btnSubmit.disabled = false;
-                document.getElementById("passwordInputPro").value = ""; // Kosongkan input
+                document.getElementById("passwordInputPro").value = "";
             }
         }
 
-        // Fungsi Logout
+        // Fungsi Logout Korporat
         function logoutPro() {
             sessionStorage.removeItem("hinoka_auth_pro");
             alert("Sesi Korporat Berhasil Diakhiri.");
             window.location.href = "utama.html";
+        }
+
+        // FUNGSI TOGGLE LIHAT PASSWORD (YANG HILANG TADI)
+        function togglePasswordPro() {
+            const inputField = document.getElementById("passwordInputPro");
+            const btnToggle = document.getElementById("toggleBtnPro");
+            if (inputField.type === "password") {
+                inputField.type = "text";
+                btnToggle.innerText = "Sembunyikan";
+            } else {
+                inputField.type = "password";
+                btnToggle.innerText = "Lihat";
+            }
         }
     </script>
     <style>
@@ -83,48 +95,55 @@
             padding: 0;
             line-height: 1.6;
         }
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-            text-align: center;
+        /* Navigasi Korporat */
+        nav {
+            background-color: rgba(19, 28, 46, 0.95);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 25px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 0.95em;
+            color: var(--accent-teal);
+        }
+        .nav-brand img { height: 35px; margin-right: 8px; }
+        .nav-links { list-style: none; display: flex; align-items: center; margin: 0; padding: 0; }
+        .nav-links li { margin-left: 15px; }
+        .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 500; }
+        .nav-links a:hover { color: var(--accent-teal); }
+        .logout-btn-pro {
+            background-color: var(--danger-red); color: white; border: none;
+            padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;
+        }
+        .logout-btn-pro:hover { background-color: #c0392b; }
+
+        /* Konten Utama EIMS */
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; text-align: center; }
         .welcome-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 40px;
-            display: inline-block;
-            margin-top: 50px;
+            background-color: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 40px; display: inline-block; margin-top: 50px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
-        .welcome-card h2 {
-            color: var(--accent-green);
-            font-size: 2.5em;
-            margin-bottom: 20px;
-        }
-        .logout-btn-pro {
-            background-color: var(--danger-red);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1.1em;
-            margin-top: 30px;
-        }
+        .welcome-card h2 { color: var(--accent-green); font-size: 2.5em; margin-bottom: 20px; }
+        .welcome-card p { color: var(--text-muted); font-size: 1.1em; max-width: 700px; margin: 0 auto 30px auto; }
 
-        /* MODAL LOGIN PRO (Diperbarui) */
+        /* MODAL LOGIN PRO (Diperbarui dengan tombol Lihat) */
         #modalLoginPro {
-            display: none; 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background-color: rgba(11, 15, 25, 0.98); z-index: 9999; 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(11, 15, 25, 0.98); z-index: 9999;
             justify-content: center; align-items: center;
         }
         .login-box-pro {
-            background-color: #131c2e; border: 1px solid #1e293b; 
-            padding: 50px; border-radius: 16px; width: 420px; 
+            background-color: #131c2e; border: 1px solid #1e293b;
+            padding: 50px; border-radius: 16px; width: 420px;
             box-shadow: 0 12px 24px rgba(0,0,0,0.6); text-align: center;
         }
         .login-box-pro h2 {
@@ -134,35 +153,39 @@
         .login-instr {
             color: #94a3b8; font-size: 0.95em; margin-bottom: 30px; line-height: 1.5;
         }
-        .form-field-pro {
-            position: relative; margin-bottom: 20px;
-        }
+        .form-field-pro { position: relative; margin-bottom: 20px; }
         .form-field-pro input {
-            width: 100%; padding: 15px 20px; 
-            border-radius: 8px; border: 1px solid #1e293b; 
-            background-color: #0b0f19; color: #f1f5f9; box-sizing: border-box; 
+            width: 100%; padding: 15px 60px 15px 20px; /* Padding kanan lebar untuk tombol */
+            border-radius: 8px; border: 1px solid #1e293b;
+            background-color: #0b0f19; color: #f1f5f9; box-sizing: border-box;
             font-size: 1.1em;
         }
+        .toggle-pass-pro {
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+            background: none; border: none; color: #00b4d8; cursor: pointer;
+            font-weight: bold; font-size: 0.85em; text-transform: uppercase;
+        }
         .error-msg-pro {
-            color: #e74c3c; font-size: 0.9em; margin-bottom: 20px; font-weight: 600; min-height: 1.2em;
+            color: #e74c3c; font-size: 0.9em; margin-bottom: 20px;
+            font-weight: 600; min-height: 1.2em;
         }
         .submit-login-pro {
-            width: 100%; padding: 16px; 
-            background-color: #00b4d8; color: #0b0f19; border: none; 
-            border-radius: 8px; font-weight: bold; font-size: 1.1em; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 1px; transition: background 0.3s;
+            width: 100%; padding: 16px; background-color: #00b4d8;
+            color: #0b0f19; border: none; border-radius: 8px; font-weight: bold;
+            font-size: 1.1em; cursor: pointer; text-transform: uppercase;
+            letter-spacing: 1px; transition: background 0.3s;
         }
         .submit-login-pro:hover { background-color: #2ec4b6; }
         .back-home-pro {
-            width: 100%; padding: 12px; background-color: transparent; 
-            color: #94a3b8; border: none; margin-top: 15px; cursor: pointer; 
+            width: 100%; padding: 12px; background-color: transparent;
+            color: #94a3b8; border: none; margin-top: 15px; cursor: pointer;
             font-size: 0.9em; text-decoration: underline;
         }
     </style>
 </head>
 <body onload="cekSesiLogin()">
 
-    <!-- MODAL LOGIN PRO (Pastikan Hash di atas sudah benar) -->
+    <!-- MODAL LOGIN PRO (FINAL) -->
     <div id="modalLoginPro">
         <div class="login-box-pro">
             <h2>Area Korporat</h2>
@@ -174,8 +197,9 @@
             
             <form onsubmit="prosesLoginPro(event)">
                 <div class="form-field-pro">
-                    <!-- PENTING: Tipe input adalah password -->
                     <input type="password" id="passwordInputPro" placeholder="••••••••" required>
+                    <!-- TOMBOL "LIHAT" YANG TADI HILANG KINI SUDAH KEMBALI -->
+                    <button type="button" id="toggleBtnPro" onclick="togglePasswordPro()" class="toggle-pass-pro">Lihat</button>
                 </div>
                 <div id="pesanErrorPro" class="error-msg-pro"></div>
                 <button type="submit" id="loginBtnPro" class="submit-login-pro">Masuk Sistem</button>
@@ -184,12 +208,28 @@
         </div>
     </div>
 
+    <!-- NAVIGASI STANDAR KORPORAT -->
+    <nav>
+        <div class="nav-brand">
+            <img src="logo_hinoka.png" alt="Logo PT. Hinoka Alsindo Tekni">
+            PT. HINOKA ALSINDO TEKNI
+        </div>
+        <ul class="nav-links">
+            <li><a href="utama.html">Beranda</a></li>
+            <li><a href="katalog.html">Katalog Mesin</a></li>
+            <li><a href="agen-distributor.html">Kemitraan</a></li>
+            <li><a href="eims.html" style="color: var(--accent-teal);">Sistem EIMS</a></li>
+            <li><a href="dashboard.html">Dashboard EIMS</a></li>
+            <li><a href="kontak.html">Kontak</a></li>
+            <li><button class="logout-btn-pro" onclick="logoutPro()">Logout</button></li>
+        </ul>
+    </nav>
+
     <!-- KONTEN UTAMA EIMS (Tampil setelah login sukses) -->
     <div class="container">
         <div class="welcome-card">
             <h2>SELAMAT DATANG</h2>
             <p>Area Administratif EIMS PT. Hinoka Alsindo Tekni. Modul manajemen mitra dan data sedang dalam pengembangan profesional.</p>
-            <button class="logout-btn-pro" onclick="logoutPro()">Logout Korporat</button>
         </div>
     </div>
 
