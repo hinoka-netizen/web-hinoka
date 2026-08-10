@@ -5,44 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HEMS - Kitab Induk Korporat - PT. Hinoka Alsindo Tekni</title>
     <script>
-        // ============================================================
-        // HINOKA ENTERPRISE MANAGEMENT SYSTEM (HEMS) - SISTEM OTORISASI
-        // ============================================================
-        
         // Cek Sesi Login (Keamanan)
         function cekSesiLogin() {
             const statusLogin = sessionStorage.getItem("hinoka_auth_pro");
-            const userAkses = sessionStorage.getItem("hinoka_user");
-            
             if (statusLogin !== "verified_pro") {
-                // Jika belum login, TAMPILKAN MODAL LOGIN
                 document.getElementById("modalLoginPro").style.display = "flex";
-                // SEMBUNYIKAN KONTEN HEMS
                 document.getElementById("hemsKitabInduk").style.display = "none";
-                document.getElementById("navHEMS").style.display = "none";
             } else {
-                // Jika sudah login, TAMPILKAN KONTEN HEMS
                 document.getElementById("modalLoginPro").style.display = "none";
                 document.getElementById("hemsKitabInduk").style.display = "block";
-                document.getElementById("navHEMS").style.display = "flex";
-                document.getElementById("namaUserTampil").innerText = "Hai, " + userAkses;
             }
         }
 
-        // Fungsi Proses Login (Sederhana untuk Pengembangan Lokal)
+        // Fungsi Proses Login
         function prosesLoginPro(event) {
             event.preventDefault();
             const inputSandi = document.getElementById("passwordInputPro").value;
             const errorMsg = document.getElementById("pesanErrorPro");
 
             if (inputSandi === "Hinoka2030") {
-                // Login Sukses
                 sessionStorage.setItem("hinoka_auth_pro", "verified_pro");
-                sessionStorage.setItem("hinoka_user", "Direksi / Admin");
                 document.getElementById("modalLoginPro").style.display = "none";
-                location.reload(); // Muat ulang untuk menampilkan konten
+                location.reload();
             } else {
-                // Login Gagal
                 errorMsg.innerText = "Akses Ditolak! Kredensial tidak valid.";
                 document.getElementById("passwordInputPro").value = "";
             }
@@ -51,7 +36,6 @@
         // Fungsi Logout
         function logoutPro() {
             sessionStorage.removeItem("hinoka_auth_pro");
-            sessionStorage.removeItem("hinoka_user");
             alert("Sesi Korporat Berhasil Diakhiri.");
             window.location.href = "utama.html";
         }
@@ -70,7 +54,6 @@
         }
     </script>
     <style>
-        /* CSS Korporat Global - HEMS Theme */
         :root {
             --primary-bg: #0b0f19;
             --card-bg: #131c2e;
@@ -80,24 +63,14 @@
             --text-muted: #94a3b8;
             --border-color: #1e293b;
             --danger-red: #e74c3c;
-            --volume-1: #3498db; /* Biru */
-            --volume-5: #f1c40f; /* Kuning Manual Mutu */
-            --volume-7: #27ae60; /* Hijau SOP Master */
-            --volume-11: #e67e22; /* Oranye Formulir */
         }
         body {
             background-color: var(--primary-bg);
             color: var(--text-light);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            line-height: 1.6;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
         }
-
-        /* Navigasi Korporat */
         nav {
             background-color: rgba(19, 28, 46, 0.95);
             display: flex;
@@ -108,7 +81,6 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(10px);
         }
         .nav-brand {
             display: flex;
@@ -120,241 +92,128 @@
         .nav-brand img { height: 35px; margin-right: 8px; }
         .nav-links { list-style: none; display: flex; align-items: center; margin: 0; padding: 0; }
         .nav-links li { margin-left: 15px; }
-        .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 500; transition: color 0.2s; }
-        .nav-links a:hover, .nav-links a.active { color: var(--accent-teal); }
-        .user-info-display { color: var(--accent-green); font-size: 0.9em; margin-right: 15px; font-weight: bold; }
+        .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 500; }
+        .nav-links a:hover { color: var(--accent-teal); }
         .logout-btn-pro {
             background-color: var(--danger-red); color: white; border: none;
-            padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;
+            padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;
         }
         .logout-btn-pro:hover { background-color: #c0392b; }
 
-        /* Konten Utama HEMS */
-        .hems-container {
-            max-width: 1400px;
-            margin: 30px auto;
-            padding: 0 20px;
-            flex: 1;
-        }
+        .hems-container { max-width: 1300px; margin: 40px auto; padding: 0 20px; }
         .hems-header {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            background-color: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 30px; margin-bottom: 30px; text-align: center;
         }
-        .hems-header-left h1 {
-            color: var(--accent-green);
-            font-size: 2em;
-            margin: 0 0 10px 0;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
-        .hems-header-left p {
-            color: var(--text-muted);
-            margin: 0;
-            font-size: 1.1em;
-        }
-        .hems-header-right {
-            text-align: right;
-            border-left: 2px solid var(--border-color);
-            padding-left: 20px;
-        }
-        .hems-header-right h3 { margin: 0 0 5px 0; color: var(--accent-teal); }
-        .hems-header-right p { margin: 0; color: var(--text-muted); font-size: 0.9em; }
+        .hems-header h1 { color: var(--accent-green); font-size: 2.2em; margin: 0 0 10px 0; }
+        .hems-header p { color: var(--text-muted); font-size: 1.1em; margin: 0; }
 
-        /* Struktur Volume Grid */
         .volume-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
         }
         .volume-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 25px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            background-color: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 10px; padding: 20px; transition: transform 0.2s;
         }
-        .volume-card:hover {
-            transform: translateY(-50px);
-            box-shadow: 0 10px 20px rgba(0,180,216,0.15);
-            border-color: var(--accent-teal);
-        }
-        /* Garis Warna Volume */
-        .volume-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-        }
-        /* Warna Khusus Volume */
-        .vol-1::before { background-color: var(--volume-1); }
-        .vol-5::before { background-color: var(--volume-5); }
-        .vol-7::before { background-color: var(--volume-7); }
-        .vol-11::before { background-color: var(--volume-11); }
+        .volume-card:hover { transform: translateY(-3px); border-color: var(--accent-teal); }
+        .volume-card h3 { color: var(--accent-teal); margin-top: 0; font-size: 1.2em; }
+        .volume-card p { color: var(--text-muted); font-size: 0.9em; margin-bottom: 0; }
 
-        .vol-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-        .vol-header h2 {
-            font-size: 1.3em;
-            margin: 0;
-            color: var(--text-light);
-        }
-        .vol-code {
-            font-size: 0.8em;
-            font-weight: bold;
-            padding: 3px 8px;
-            border-radius: 4px;
-            background-color: rgba(255,255,255,0.05);
-            color: var(--text-muted);
-        }
-        .vol-desc {
-            color: var(--text-muted);
-            font-size: 0.9em;
-            margin-bottom: 20px;
-            flex: 1;
-        }
-        .vol-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.8em;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border-color);
-            padding-top: 15px;
-        }
-        .status-badge {
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-        .status-active { background-color: rgba(46, 204, 113, 0.15); color: var(--accent-green); }
-        .status-dev { background-color: rgba(241, 196, 15, 0.15); color: var(--volume-5); }
-        .btn-volume {
-            background-color: transparent;
-            border: 1px solid var(--accent-teal);
-            color: var(--accent-teal);
-            padding: 8px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-            text-align: center;
-        }
-        .btn-volume:hover {
-            background-color: var(--accent-teal);
-            color: var(--primary-bg);
-        }
-
-        /* Footer Korporat */
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: var(--text-muted);
-            font-size: 0.85em;
-            border-top: 1px solid var(--border-color);
-            margin-top: 50px;
-            background-color: rgba(19, 28, 46, 0.5);
-        }
-
-        /* MODAL LOGIN PRO (DIPERBAIKI) */
+        /* MODAL LOGIN */
         #modalLoginPro {
-            display: none; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background-color: rgba(11, 15, 25, 0.98); 
-            z-index: 9999; 
-            justify-content: center; 
-            align-items: center;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(11, 15, 25, 0.98); z-index: 9999;
+            justify-content: center; align-items: center;
         }
         .login-box-pro {
-            background-color: #131c2e; 
-            border: 1px solid #1e293b; 
-            padding: 50px; 
-            border-radius: 16px; 
-            width: 420px; 
-            box-shadow: 0 12px 24px rgba(0,0,0,0.6); 
-            text-align: center;
+            background-color: #131c2e; border: 1px solid #1e293b;
+            padding: 40px; border-radius: 16px; width: 400px; text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
-        .login-box-pro h2 {
-            color: #00b4d8; 
-            margin-bottom: 10px; 
-            font-size: 1.8em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .login-instr {
-            color: #94a3b8; 
-            font-size: 0.95em; 
-            margin-bottom: 30px; 
-            line-height: 1.5;
-        }
-        .form-field-pro {
-            position: relative; 
-            margin-bottom: 20px;
-        }
+        .login-box-pro h2 { color: #00b4d8; margin-bottom: 10px; font-size: 1.6em; }
+        .login-instr { color: #94a3b8; font-size: 0.9em; margin-bottom: 25px; }
+        .form-field-pro { position: relative; margin-bottom: 20px; }
         .form-field-pro input {
-            width: 100%; 
-            padding: 15px 60px 15px 20px; 
-            border-radius: 8px; 
-            border: 1px solid #1e293b; 
-            background-color: #0b0f19; 
-            color: #f1f5f9; 
-            box-sizing: border-box; 
-            font-size: 1.1em;
-        }
-        .form-field-pro input:focus {
-            outline: none;
-            border-color: #00b4d8;
+            width: 100%; padding: 14px 50px 14px 15px; border-radius: 8px;
+            border: 1px solid #1e293b; background-color: #0b0f19; color: #f1f5f9; box-sizing: border-box; font-size: 1em;
         }
         .toggle-pass-pro {
-            position: absolute; 
-            right: 15px; 
-            top: 50%; 
-            transform: translateY(-50%); 
-            background: none; 
-            border: none; 
-            color: #00b4d8; 
-            cursor: pointer; 
-            font-weight: bold; 
-            font-size: 0.85em;
-            text-transform: uppercase;
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+            background: none; border: none; color: #00b4d8; cursor: pointer; font-weight: bold; font-size: 0.8em;
         }
-        .error-msg-pro {
-            color: #e74c3c; 
-            font-size: 0.9em; 
-            margin-bottom: 20px; 
-            font-weight: 600; 
-            min-height: 1.2em;
-        }
+        .error-msg-pro { color: #e74c3c; font-size: 0.85em; margin-bottom: 15px; font-weight: bold; }
         .submit-login-pro {
-            width: 100%; 
-            padding: 16px; 
-            background-color: #00b4d8; 
-            color: #0b0f19; 
-            border: none; 
-            border-radius: 8px; 
-            font-weight: bold; 
-            font-size: 1.1em; 
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing:
+            width: 100%; padding: 14px; background-color: #00b4d8; color: #0b0f19;
+            border: none; border-radius: 8px; font-weight: bold; font-size: 1em; cursor: pointer;
+        }
+        .submit-login-pro:hover { background-color: #2ec4b6; }
+        .back-home-pro {
+            width: 100%; padding: 10px; background-color: transparent; color: #94a3b8;
+            border: none; margin-top: 10px; cursor: pointer; font-size: 0.85em; text-decoration: underline;
+        }
+    </style>
+</head>
+<body onload="cekSesiLogin()">
+
+    <!-- MODAL LOGIN -->
+    <div id="modalLoginPro">
+        <div class="login-box-pro">
+            <h2>Area Korporat</h2>
+            <div class="login-instr">Masukkan Kunci Akses untuk HEMS PT. Hinoka Alsindo Tekni</div>
+            <form onsubmit="prosesLoginPro(event)">
+                <div class="form-field-pro">
+                    <input type="password" id="passwordInputPro" placeholder="••••••••" required>
+                    <button type="button" id="toggleBtnPro" onclick="togglePasswordPro()" class="toggle-pass-pro">Lihat</button>
+                </div>
+                <div id="pesanErrorPro" class="error-msg-pro"></div>
+                <button type="submit" class="submit-login-pro">Masuk Sistem</button>
+                <button type="button" onclick="window.location.href='utama.html'" class="back-home-pro">Kembali ke Beranda</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- NAVIGASI KORPORAT -->
+    <nav>
+        <div class="nav-brand">
+            <img src="logo_hinoka.png" alt="Logo"> PT. HINOKA ALSINDO TEKNI
+        </div>
+        <ul class="nav-links">
+            <li><a href="utama.html">Beranda</a></li>
+            <li><a href="katalog.html">Katalog</a></li>
+            <li><a href="agen-distributor.html">Kemitraan</a></li>
+            <li><a href="eims.html" style="color: var(--accent-teal);">HEMS</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><button class="logout-btn-pro" onclick="logoutPro()">Logout</button></li>
+        </ul>
+    </nav>
+
+    <!-- KONTEN KITAB INDUK HEMS (15 VOLUME) -->
+    <div class="hems-container" id="hemsKitabInduk">
+        <div class="hems-header">
+            <h1>Kitab Induk Manajemen Perusahaan</h1>
+            <p>Hinoka Enterprise Management System (HEMS) — Konstitusi Operasional PT. Hinoka Alsindo Tekni</p>
+        </div>
+
+        <div class="volume-grid">
+            <div class="volume-card"><h3>Volume 1: Legal & Corporate Foundation</h3><p>Akta Pendirian, NIB, NPWP, Anggaran Dasar, Corporate Identity, Visi, Misi, & Core Values.</p></div>
+            <div class="volume-card"><h3>Volume 2: Corporate Governance</h3><p>Struktur Organisasi, Job Description, Wewenang, Delegasi, Kode Etik, & Budaya Kerja.</p></div>
+            <div class="volume-card"><h3>Volume 3: Corporate Strategy</h3><p>Corporate Blueprint, Business Plan, Strategic Planning, SWOT, Balanced Scorecard, & Roadmap.</p></div>
+            <div class="volume-card"><h3>Volume 4: Corporate Policy</h3><p>Seluruh Kebijakan Mutu, SDM, Produksi, Keuangan, Purchasing, K3, dan IT.</p></div>
+            <div class="volume-card"><h3>Volume 5: Quality Management System</h3><p>Manual Mutu Berstandar ISO 9001:2015 (Klausul 4 hingga 10).</p></div>
+            <div class="volume-card"><h3>Volume 6: Business Process</h3><p>Alur Proses Bisnis dari Customer Inquiry, Produksi, QC, Delivery, hingga After Sales.</p></div>
+            <div class="volume-card"><h3>Volume 7: SOP Master</h3><p>Seluruh Standar Operasional Prosedur (SOP) departemen Marketing, Produksi, HRGA, dll.</p></div>
+            <div class="volume-card"><h3>Volume 8: Prosedur Kerja (PK)</h3><p>Prosedur teknis pengelasan, pembubutan, pengecatan, assembly, dan rekrutmen.</p></div>
+            <div class="volume-card"><h3>Volume 9: Instruksi Kerja (IK)</h3><p>Petunjuk teknis setting mesin, kalibrasi, pengoperasian forklift, dan alat ukur.</p></div>
+            <div class="volume-card"><h3>Volume 10: Standar Teknis</h3><p>Drawing, BOM, Parameter Mesin, Spesifikasi Material, dan Standar Dimensi.</p></div>
+            <div class="volume-card"><h3>Volume 11: Formulir Korporat</h3><p>Seluruh formulir resmi perusahaan dari FRM-001 hingga Review Manajemen.</p></div>
+            <div class="volume-card"><h3>Volume 12: Database Perusahaan</h3><p>Database Supplier, Customer, Mesin, Karyawan, Risk, dan Kalibrasi Aset.</p></div>
+            <div class="volume-card"><h3>Volume 13: KPI Management</h3><p>Corporate KPI, Department KPI, Individual KPI, dan Scorecard Penilaian Kinerja.</p></div>
+            <div class="volume-card"><h3>Volume 14: Risk Management</h3><p>Risk Register, Risk Matrix, Mitigasi, Business Continuity, & Emergency Response.</p></div>
+            <div class="volume-card"><h3>Volume 15: Continual Improvement</h3><p>PDCA, Kaizen, 5S/5R, Lesson Learned, CAPA, dan Program Inovasi.</p></div>
+        </div>
+    </div>
+
+</body>
+</html>
