@@ -3,43 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EIMS Korporat - PT. Hinoka Alsindo Tekni</title>
+    <title>HEMS - Kitab Induk Korporat - PT. Hinoka Alsindo Tekni</title>
     <script>
         // ============================================================
-        // SISTEM KEAMANAN SEMENTARA (Verifikasi Teks Langsung)
-        // Password yang benar adalah: Hinoka2030 (H besar di awal)
+        // HINOKA ENTERPRISE MANAGEMENT SYSTEM (HEMS) - SISTEM OTORISASI
         // ============================================================
-
-        // Fungsi Cek Sesi Login
+        
+        // Cek Sesi Login (Keamanan)
         function cekSesiLogin() {
             const statusLogin = sessionStorage.getItem("hinoka_auth_pro");
             if (statusLogin !== "verified_pro") {
                 document.getElementById("modalLoginPro").style.display = "flex";
+            } else {
+                // Jika sudah login, tampilkan nama user di navigasi
+                document.getElementById("namaUserTampil").innerText = "Hai, Direksi";
             }
         }
 
-        // Fungsi Proses Login (Versi Sederhana)
+        // Fungsi Proses Login (Sederhana untuk Pengembangan Lokal)
         function prosesLoginPro(event) {
-            event.preventDefault(); // Mencegah halaman reload
+            event.preventDefault();
             const inputSandi = document.getElementById("passwordInputPro").value;
             const errorMsg = document.getElementById("pesanErrorPro");
 
-            // PENTING: Membandingkan input dengan teks "Hinoka2030" secara langsung
             if (inputSandi === "Hinoka2030") {
-                // Login Sukses
                 sessionStorage.setItem("hinoka_auth_pro", "verified_pro");
                 document.getElementById("modalLoginPro").style.display = "none";
-                location.reload(); // Muat ulang halaman utama
+                location.reload();
             } else {
-                // Login Gagal
-                errorMsg.innerText = "Akses Ditolak! Kredensial tidak valid. Pastikan huruf besar/kecil benar.";
-                document.getElementById("passwordInputPro").value = ""; // Kosongkan input
+                errorMsg.innerText = "Akses Ditolak! Kredensial tidak valid.";
+                document.getElementById("passwordInputPro").value = "";
             }
         }
 
         // Fungsi Logout
         function logoutPro() {
             sessionStorage.removeItem("hinoka_auth_pro");
+            sessionStorage.removeItem("hinoka_user");
             alert("Sesi Korporat Berhasil Diakhiri.");
             window.location.href = "utama.html";
         }
@@ -58,6 +58,7 @@
         }
     </script>
     <style>
+        /* CSS Korporat Global - HEMS Theme */
         :root {
             --primary-bg: #0b0f19;
             --card-bg: #131c2e;
@@ -67,16 +68,24 @@
             --text-muted: #94a3b8;
             --border-color: #1e293b;
             --danger-red: #e74c3c;
+            --volume-1: #3498db; /* Biru */
+            --volume-5: #f1c40f; /* Kuning Manual Mutu */
+            --volume-7: #27ae60; /* Hijau SOP Master */
+            --volume-11: #e67e22; /* Oranye Formulir */
         }
         body {
             background-color: var(--primary-bg);
             color: var(--text-light);
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
             line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
-        /* Navigasi */
+
+        /* Navigasi Korporat */
         nav {
             background-color: rgba(19, 28, 46, 0.95);
             display: flex;
@@ -87,6 +96,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            backdrop-filter: blur(10px);
         }
         .nav-brand {
             display: flex;
@@ -98,22 +108,159 @@
         .nav-brand img { height: 35px; margin-right: 8px; }
         .nav-links { list-style: none; display: flex; align-items: center; margin: 0; padding: 0; }
         .nav-links li { margin-left: 15px; }
-        .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 500; }
-        .nav-links a:hover { color: var(--accent-teal); }
+        .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent-teal); }
+        .user-info-display { color: var(--accent-green); font-size: 0.9em; margin-right: 15px; font-weight: bold; }
         .logout-btn-pro {
             background-color: var(--danger-red); color: white; border: none;
-            padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;
+            padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;
         }
         .logout-btn-pro:hover { background-color: #c0392b; }
-        /* Konten Utama */
-        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; text-align: center; }
-        .welcome-card {
-            background-color: var(--card-bg); border: 1px solid var(--border-color);
-            border-radius: 12px; padding: 40px; display: inline-block; margin-top: 50px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+
+        /* Konten Utama HEMS */
+        .hems-container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+            flex: 1;
         }
-        .welcome-card h2 { color: var(--accent-green); font-size: 2.5em; margin-bottom: 20px; }
-        .welcome-card p { color: var(--text-muted); font-size: 1.1em; max-width: 700px; margin: 0 auto 30px auto; }
+        .hems-header {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .hems-header-left h1 {
+            color: var(--accent-green);
+            font-size: 2em;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .hems-header-left p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 1.1em;
+        }
+        .hems-header-right {
+            text-align: right;
+            border-left: 2px solid var(--border-color);
+            padding-left: 20px;
+        }
+        .hems-header-right h3 { margin: 0 0 5px 0; color: var(--accent-teal); }
+        .hems-header-right p { margin: 0; color: var(--text-muted); font-size: 0.9em; }
+
+        /* Struktur Volume Grid */
+        .volume-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .volume-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .volume-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,180,216,0.15);
+            border-color: var(--accent-teal);
+        }
+        /* Garis Warna Volume */
+        .volume-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+        }
+        /* Warna Khusus Volume */
+        .vol-1::before { background-color: var(--volume-1); }
+        .vol-5::before { background-color: var(--volume-5); }
+        .vol-7::before { background-color: var(--volume-7); }
+        .vol-11::before { background-color: var(--volume-11); }
+
+        .vol-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        .vol-header h2 {
+            font-size: 1.3em;
+            margin: 0;
+            color: var(--text-light);
+        }
+        .vol-code {
+            font-size: 0.8em;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background-color: rgba(255,255,255,0.05);
+            color: var(--text-muted);
+        }
+        .vol-desc {
+            color: var(--text-muted);
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+        .vol-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8em;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+        }
+        .status-badge {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .status-active { background-color: rgba(46, 204, 113, 0.15); color: var(--accent-green); }
+        .status-dev { background-color: rgba(241, 196, 15, 0.15); color: var(--volume-5); }
+        .btn-volume {
+            background-color: transparent;
+            border: 1px solid var(--accent-teal);
+            color: var(--accent-teal);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        .btn-volume:hover {
+            background-color: var(--accent-teal);
+            color: var(--primary-bg);
+        }
+
+        /* Footer Korporat */
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+            font-size: 0.85em;
+            border-top: 1px solid var(--border-color);
+            margin-top: 50px;
+            background-color: rgba(19, 28, 46, 0.5);
+        }
+
         /* MODAL LOGIN PRO */
         #modalLoginPro {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -164,52 +311,8 @@
 </head>
 <body onload="cekSesiLogin()">
 
-    <!-- MODAL LOGIN PRO (VERSI SEDERHANA) -->
+    <!-- MODAL LOGIN PRO -->
     <div id="modalLoginPro">
         <div class="login-box-pro">
             <h2>Area Korporat</h2>
-            <div class="login-instr">
-                <div>Masukkan Kunci Akses Anda untuk</div>
-                <div>Enterprise Integrated Management System &</div>
-                <div style="color: #00b4d8; font-weight: bold;">Dashboard Admin HINOKA</div>
-            </div>
-            
-            <form onsubmit="prosesLoginPro(event)">
-                <div class="form-field-pro">
-                    <input type="password" id="passwordInputPro" placeholder="••••••••" required>
-                    <button type="button" id="toggleBtnPro" onclick="togglePasswordPro()" class="toggle-pass-pro">Lihat</button>
-                </div>
-                <div id="pesanErrorPro" class="error-msg-pro"></div>
-                <button type="submit" id="loginBtnPro" class="submit-login-pro">Masuk Sistem</button>
-                <button type="button" onclick="window.location.href='utama.html'" class="back-home-pro">Kembali ke Beranda Publik</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- NAVIGASI STANDAR KORPORAT -->
-    <nav>
-        <div class="nav-brand">
-            <img src="logo_hinoka.png" alt="Logo PT. Hinoka Alsindo Tekni">
-            PT. HINOKA ALSINDO TEKNI
-        </div>
-        <ul class="nav-links">
-            <li><a href="utama.html">Beranda</a></li>
-            <li><a href="katalog.html">Katalog Mesin</a></li>
-            <li><a href="agen-distributor.html">Kemitraan</a></li>
-            <li><a href="eims.html" style="color: var(--accent-teal);">Sistem EIMS</a></li>
-            <li><a href="dashboard.html">Dashboard EIMS</a></li>
-            <li><a href="kontak.html">Kontak</a></li>
-            <li><button class="logout-btn-pro" onclick="logoutPro()">Logout</button></li>
-        </ul>
-    </nav>
-
-    <!-- KONTEN UTAMA EIMS (Tampil setelah login sukses) -->
-    <div class="container">
-        <div class="welcome-card">
-            <h2>SELAMAT DATANG</h2>
-            <p>Area Administratif EIMS PT. Hinoka Alsindo Tekni. Modul manajemen mitra dan data sedang dalam pengembangan profesional.</p>
-        </div>
-    </div>
-
-</body>
-</html>
+            <div class="login-
