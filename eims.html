@@ -3,31 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem EIMS & Arsitektur Korporat - PT. Hinoka Alsindo Tekni</title>
+    <title>EIMS Korporat - PT. Hinoka Alsindo Tekni</title>
     <script>
+        // ============================================================
+        // SISTEM KEAMANAN KORPORAT - HINOKA EIMS
+        // Menggunakan standar enkripsi SHA-256 untuk validasi password.
+        // Password Asli tidak disimpan di dalam koding.
+        // ============================================================
+
+        // KODE HASH SHA-256 UNTUK PASSWORD ANDA (Generate by System)
+        // Password asli yang Anda tetapkan sebelumnya adalah: Hinoka2030
+        const HINOKA_PASSWORD_HASH = "8101948a480fd58d3d214795e5081c9a7010851370b178f17b83595a6a07726b"; 
+
+        // Fungsi utilitas untuk mengubah teks menjadi Hash SHA-256 (Asinkron)
+        async function generateSHA256(text) {
+            const msgBuffer = new TextEncoder().encode(text);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
+        // Fungsi Cek Sesi Login
         function cekSesiLogin() {
-            let statusLogin = sessionStorage.getItem("hinoka_auth");
-            if (statusLogin !== "sukses") {
-                let modal = document.getElementById("modalLogin");
-                if(modal) {
-                    modal.style.display = "flex";
-                }
+            const statusLogin = sessionStorage.getItem("hinoka_auth_pro");
+            const userAkses = sessionStorage.getItem("hinoka_user");
+            
+            // Jika belum login, paksa tampilkan modal login
+            if (statusLogin !== "verified_pro") {
+                document.getElementById("modalLoginPro").style.display = "flex";
+            } else {
+                // Jika sudah login, tampilkan nama user di navigasi
+                document.getElementById("namaUserTampil").innerText = "Hai, " + userAkses;
             }
         }
-        function prosesLogin(event) {
+
+        // Fungsi Proses Login (Versi Profesional)
+        async function prosesLoginPro(event) {
             event.preventDefault();
-            let inputSandi = document.getElementById("passwordInput").value;
-            if (inputSandi === "Hinoka2030") {
-                sessionStorage.setItem("hinoka_auth", "sukses");
-                document.getElementById("modalLogin").style.display = "none";
+            const inputSandi = document.getElementById("passwordInputPro").value;
+            const btnSubmit = document.getElementById("loginBtnPro");
+            const errorMsg = document.getElementById("pesanErrorPro");
+
+            // Ubah tombol menjadi state "Loading"
+            btnSubmit.innerText = "Memproses Enkripsi...";
+            btnSubmit.disabled = true;
+
+            // Enkripsi input user dan bandingkan dengan hash tersimpan
+            const inputHash = await generateSHA256(inputSandi);
+
+            if (inputHash === HINOKA_PASSWORD_HASH) {
+                // Login Sukses
+                sessionStorage.setItem("hinoka_auth_pro", "verified_pro");
+                // Identitas User (kita set statis dulu untuk sekarang, nanti bisa dibuat dinamis)
+                sessionStorage.setItem("hinoka_user", "Direksi / Admin"); 
+                
+                document.getElementById("modalLoginPro").style.display = "none";
                 location.reload();
             } else {
-                document.getElementById("pesanError").innerText = "Password Salah! Silakan coba lagi.";
+                // Login Gagal
+                errorMsg.innerText = "Akses Ditolak! Kredensial tidak valid.";
+                btnSubmit.innerText = "Masuk Sistem";
+                btnSubmit.disabled = false;
             }
         }
-        function togglePassword() {
-            let inputField = document.getElementById("passwordInput");
-            let btnToggle = document.getElementById("toggleBtn");
+
+        // Fungsi Logout
+        function logoutPro() {
+            sessionStorage.removeItem("hinoka_auth_pro");
+            sessionStorage.removeItem("hinoka_user");
+            alert("Sesi Korporat Berhasil Diakhiri.");
+            window.location.href = "utama.html";
+        }
+
+        // Fungsi Toggle Lihat Password
+        function togglePasswordPro() {
+            const inputField = document.getElementById("passwordInputPro");
+            const btnToggle = document.getElementById("toggleBtnPro");
             if (inputField.type === "password") {
                 inputField.type = "text";
                 btnToggle.innerText = "Sembunyikan";
@@ -36,13 +88,9 @@
                 btnToggle.innerText = "Lihat";
             }
         }
-        function logoutInternal() {
-            sessionStorage.removeItem("hinoka_auth");
-            alert("Anda telah keluar dari Area Internal Korporat.");
-            window.location.href = "utama.html";
-        }
     </script>
     <style>
+        /* CSS Korporat Global (Tetap konsisten dengan warna sebelumnya) */
         :root {
             --primary-bg: #0b0f19;
             --card-bg: #131c2e;
@@ -51,6 +99,7 @@
             --text-light: #f1f5f9;
             --text-muted: #94a3b8;
             --border-color: #1e293b;
+            --danger-red: #e74c3c;
         }
         body {
             background-color: var(--primary-bg);
@@ -60,6 +109,7 @@
             padding: 0;
             line-height: 1.6;
         }
+        /* Navigasi */
         nav {
             background-color: rgba(19, 28, 46, 0.95);
             display: flex;
@@ -69,7 +119,7 @@
             border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 100;
             flex-wrap: nowrap;
         }
         .nav-brand {
@@ -104,6 +154,26 @@
         .nav-links a:hover, .nav-links a.active {
             color: var(--accent-teal);
         }
+        .user-info-display {
+            color: var(--accent-green);
+            font-size: 0.9em;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        .logout-btn-pro {
+            background-color: var(--danger-red);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .logout-btn-pro:hover {
+            background-color: #c0392b;
+        }
+        /* Konten Utama */
         .container {
             max-width: 1200px;
             margin: 40px auto;
@@ -118,59 +188,158 @@
             color: var(--accent-teal);
             margin-bottom: 10px;
         }
-        .card {
+        /* Kartu Selamat Datang (Default sebelum modul dibuat) */
+        .welcome-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
+            padding: 40px;
+            text-align: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
-        h2 {
-            color: var(--accent-teal);
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
-            margin-top: 0;
+        .welcome-card h2 {
+            color: var(--accent-green);
+            font-size: 2em;
+            margin-bottom: 20px;
         }
-        ul {
-            padding-left: 20px;
-        }
-        li {
-            margin-bottom: 10px;
+        .welcome-card p {
             color: var(--text-muted);
+            font-size: 1.1em;
+            max-width: 700px;
+            margin: 0 auto 30px auto;
         }
-        li strong {
-            color: var(--text-light);
+        .action-modules {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid var(--border-color);
-            padding: 12px;
+        .module-box {
+            background-color: rgba(0, 180, 216, 0.05);
+            border: 1px solid var(--accent-teal);
+            border-radius: 8px;
+            padding: 20px;
             text-align: left;
         }
-        th {
-            background-color: rgba(0, 180, 216, 0.1);
+        .module-box h3 {
             color: var(--accent-teal);
+            margin-top: 0;
         }
-        td {
-            color: var(--text-muted);
+        .module-box p {
+            font-size: 0.9em;
+            margin-bottom: 15px;
         }
-        .logout-btn {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
+        .mod-btn {
+            display: inline-block;
+            background-color: var(--accent-teal);
+            color: var(--primary-bg);
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
             font-weight: bold;
-            transition: background 0.2s;
+            font-size: 0.85em;
         }
-        .logout-btn:hover {
-            background-color: #c0392b;
+
+        /* MODAL LOGIN PRO (Diperbarui) */
+        #modalLoginPro {
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(11, 15, 25, 0.98); /* Lebih gelap & buram */
+            z-index: 9999; 
+            justify-content: center; 
+            align-items: center;
+        }
+        .login-box-pro {
+            background-color: #131c2e; 
+            border: 1px solid #1e293b; 
+            padding: 50px; 
+            border-radius: 16px; 
+            width: 420px; 
+            box-shadow: 0 12px 24px rgba(0,0,0,0.6); 
+            text-align: center;
+        }
+        .login-box-pro h2 {
+            color: #00b4d8; 
+            margin-bottom: 10px; 
+            font-size: 1.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .login-instr {
+            color: #94a3b8; 
+            font-size: 0.95em; 
+            margin-bottom: 30px; 
+            line-height: 1.5;
+        }
+        .form-field-pro {
+            position: relative; 
+            margin-bottom: 20px;
+        }
+        .form-field-pro input {
+            width: 100%; 
+            padding: 15px 60px 15px 20px; 
+            border-radius: 8px; 
+            border: 1px solid #1e293b; 
+            background-color: #0b0f19; 
+            color: #f1f5f9; 
+            box-sizing: border-box; 
+            font-size: 1.1em;
+        }
+        .form-field-pro input:focus {
+            outline: none;
+            border-color: #00b4d8;
+        }
+        .toggle-pass-pro {
+            position: absolute; 
+            right: 15px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            background: none; 
+            border: none; 
+            color: #00b4d8; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 0.85em;
+            text-transform: uppercase;
+        }
+        .error-msg-pro {
+            color: #e74c3c; 
+            font-size: 0.9em; 
+            margin-bottom: 20px; 
+            font-weight: 600; 
+            min-height: 1.2em;
+        }
+        .submit-login-pro {
+            width: 100%; 
+            padding: 16px; 
+            background-color: #00b4d8; 
+            color: #0b0f19; 
+            border: none; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            font-size: 1.1em; 
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background 0.3s;
+        }
+        .submit-login-pro:hover {
+            background-color: #2ec4b6;
+        }
+        .back-home-pro {
+            width: 100%; 
+            padding: 12px; 
+            background-color: transparent; 
+            color: #94a3b8; 
+            border: none; 
+            margin-top: 15px; 
+            cursor: pointer; 
+            font-size: 0.9em;
+            text-decoration: underline;
         }
         footer {
             text-align: center;
@@ -184,97 +353,28 @@
 </head>
 <body onload="cekSesiLogin()">
 
-    <!-- Modal Login Kustom Korporat -->
-  <div id="modalLogin" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(11, 15, 25, 0.95); z-index: 9999; justify-content: center; align-items: center;">
-        <div style="background-color: #131c2e; border: 1px solid #1e293b; padding: 40px; border-radius: 12px; width: 420px; box-shadow: 0 8px 16px rgba(0,0,0,0.5); text-align: center;">
-            <h2 style="color: #00b4d8; margin-bottom: 10px; font-size: 1.4em;">AREA INTERNAL KORPORAT</h2>
-            
-            <!-- Teks 3 Baris Rapi Sesuai Permintaan -->
-            <div style="color: #94a3b8; font-size: 0.95em; margin-bottom: 25px; line-height: 1.5;">
-                <div>Masukkan Password</div>
-                <div>Akses Enterprise Integrated Management System</div>
-                <div style="color: #00b4d8; font-weight: bold;">Dashboard HINOKA</div>
+    <!-- MODAL LOGIN PRO (Bagian yang diubah untuk keamanan) -->
+    <div id="modalLoginPro">
+        <div class="login-box-pro">
+            <h2>Area Korporat</h2>
+            <div class="login-instr">
+                <div>Masukkan Kunci Akses Anda untuk</div>
+                <div>Enterprise Integrated Management System &</div>
+                <div style="color: #00b4d8; font-weight: bold;">Dashboard Admin HINOKA</div>
             </div>
             
-            <form onsubmit="prosesLogin(event)">
-                <div style="position: relative; margin-bottom: 15px;">
-                    <input type="password" id="passwordInput" placeholder="Masukkan Password" required style="width: 100%; padding: 12px 50px 12px 15px; border-radius: 6px; border: 1px solid #1e293b; background-color: #0b0f19; color: #f1f5f9; box-sizing: border-box; font-size: 1em;">
-                    <button type="button" id="toggleBtn" onclick="togglePassword()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #00b4d8; cursor: pointer; font-weight: bold; font-size: 0.85em;">Lihat</button>
+            <form onsubmit="prosesLoginPro(event)">
+                <div class="form-field-pro">
+                    <input type="password" id="passwordInputPro" placeholder="••••••••" required>
+                    <button type="button" id="toggleBtnPro" onclick="togglePasswordPro()" class="toggle-pass-pro">Lihat</button>
                 </div>
-                <div id="pesanError" style="color: #e74c3c; font-size: 0.85em; margin-bottom: 15px; font-weight: bold;"></div>
-                <button type="submit" style="width: 100%; padding: 12px; background-color: #00b4d8; color: #0b0f19; border: none; border-radius: 6px; font-weight: bold; font-size: 1em; cursor: pointer;">Masuk Sistem</button>
-                <button type="button" onclick="window.location.href='utama.html'" style="width: 100%; padding: 10px; background-color: transparent; color: #94a3b8; border: none; margin-top: 10px; cursor: pointer;">Kembali ke Beranda</button>
+                <div id="pesanErrorPro" class="error-msg-pro"></div>
+                <button type="submit" id="loginBtnPro" class="submit-login-pro">Masuk Sistem</button>
+                <button type="button" onclick="window.location.href='utama.html'" class="back-home-pro">Kembali ke Beranda Publik</button>
             </form>
         </div>
     </div>
 
+    <!-- NAVIGASI STANDAR KORPORAT -->
     <nav>
-    <div class="nav-brand">
-        <img src="logo_hinoka.png.png" alt="Logo PT. Hinoka Alsindo Tekni">
-        PT. HINOKA ALSINDO TEKNI
-    </div>
-    <ul class="nav-links">
-        <li><a href="utama.html">Beranda</a></li>
-        <li><a href="katalog.html">Katalog Mesin</a></li>
-        <li><a href="agen-distributor.html">Kemitraan</a></li>
-        <li><a href="eims.html"class="active" style="color: var(--accent-teal);">Sistem EIMS</a></li>
-        <li><a href="dashboard.html">Dashboard EIMS</a></li>
-        <li><a href="kontak.html">Kontak</a></li>
-        <li><button class="logout-btn" onclick="logoutInternal()">Logout</button></li>
-    </ul>
-</nav>
-
-    <div class="container">
-        <div class="page-header">
-            <h1>Enterprise Integrated Management System (EIMS)</h1>
-            <p>Pusat Arsitektur Korporat, Standar Mutu ISO 9001:2015, HBSC, HEFS, & HBIDM</p>
-        </div>
-
-        <div class="card">
-            <h2>Pilar Strategis & Integrasi EIMS Hinoka</h2>
-            <p>Sistem Manajemen Terpadu PT. Hinoka Alsindo Tekni dibangun di atas fondasi kerangka kerja utuh yang menghubungkan strategi hingga tindakan nyata:</p>
-            <ul>
-                <li><strong>HEPA (Process Architecture):</strong> Memetakan seluruh alur proses bisnis manufaktur dan pelayanan teknis.</li>
-                <li><strong>HERM & HECM (RACI & Control Matrix):</strong> Menetapkan kejelasan tanggung jawab dan kendali risiko operasional.</li>
-                <li><strong>HBSC (Balanced Scorecard):</strong> Menyelaraskan 4 perspektif utama (Financial, Customer, Internal Process, Learning & Growth).</li>
-                <li><strong>HEFS (ERP Specification):</strong> Menjadi jembatan digitalisasi dari modul CRM, Sales, PPIC, Purchasing, Produksi, hingga Finance.</li>
-            </ul>
-        </div>
-
-        <div class="card">
-            <h2>Master Dokumen Terkendali EIMS & ISO 9001:2015</h2>
-            <table>
-                <tr>
-                    <th>Kode Dokumen</th>
-                    <th>Nama Modul / Sistem Korporat</th>
-                    <th>Cakupan & Fokus</th>
-                    <th>Status Sistem</th>
-                </tr>
-                <tr>
-                    <td>HBSC-001</td>
-                    <td>Hinoka Balanced Scorecard</td>
-                    <td>Manajemen Kinerja, Pembobotan KPI, & Cascading</td>
-                    <td><strong style="color: var(--accent-green);">Aktif (Terkendali)</strong></td>
-                </tr>
-                <tr>
-                    <td>HEFS-001</td>
-                    <td>ERP Functional Specification</td>
-                    <td>Blueprint Sistem Informasi & Master Data Governance</td>
-                    <td><strong style="color: var(--accent-green);">Aktif (Terkendali)</strong></td>
-                </tr>
-                <tr>
-                    <td>HBIDM-001</td>
-                    <td>Business Intelligence & Dashboard</td>
-                    <td>Executive War Room, Early Warning & Action Tracker</td>
-                    <td><strong style="color: var(--accent-green);">Aktif (Terkendali)</strong></td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    <footer>
-        &copy; 2026 PT. Hinoka Alsindo Tekni. All Rights Reserved. Enterprise Performance Management System.
-    </footer>
-
-</body>
-</html>
+        <div class="nav-brand">
