@@ -6,64 +6,45 @@
     <title>EIMS Korporat - PT. Hinoka Alsindo Tekni</title>
     <script>
         // ============================================================
-        // SISTEM KEAMANAN KORPORAT - HINOKA EIMS V2.1
+        // SISTEM KEAMANAN SEMENTARA (Verifikasi Teks Langsung)
+        // Password yang benar adalah: Hinoka2030 (H besar di awal)
         // ============================================================
-
-        // HASH SHA-256 YANG TELAH DIVERIFIKASI UNTUK "Hinoka2030"
-        const HINOKA_PASSWORD_HASH = "4b57c4a2e6082922d657a9433ff8ff866558e7a8386e25c8696753cb9fc585f6"; 
-
-        // Fungsi utilitas SHA-256
-        async function generateSHA256(text) {
-            const msgBuffer = new TextEncoder().encode(text);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            return hashHex;
-        }
 
         // Fungsi Cek Sesi Login
         function cekSesiLogin() {
             const statusLogin = sessionStorage.getItem("hinoka_auth_pro");
             if (statusLogin !== "verified_pro") {
                 document.getElementById("modalLoginPro").style.display = "flex";
-            } else {
-                 // Jika sudah login, tampilkan nama user di navigasi (opsional, nanti kita aktifkan)
-                 // document.getElementById("namaUserTampil").innerText = "Hai, Direksi";
             }
         }
 
-        // Fungsi Proses Login Korporat
-        async function prosesLoginPro(event) {
-            event.preventDefault();
+        // Fungsi Proses Login (Versi Sederhana)
+        function prosesLoginPro(event) {
+            event.preventDefault(); // Mencegah halaman reload
             const inputSandi = document.getElementById("passwordInputPro").value;
-            const btnSubmit = document.getElementById("loginBtnPro");
             const errorMsg = document.getElementById("pesanErrorPro");
 
-            btnSubmit.innerText = "Memproses Enkripsi...";
-            btnSubmit.disabled = true;
-
-            const inputHash = await generateSHA256(inputSandi);
-
-            if (inputHash === HINOKA_PASSWORD_HASH) {
+            // PENTING: Membandingkan input dengan teks "Hinoka2030" secara langsung
+            if (inputSandi === "Hinoka2030") {
+                // Login Sukses
                 sessionStorage.setItem("hinoka_auth_pro", "verified_pro");
                 document.getElementById("modalLoginPro").style.display = "none";
-                location.reload();
+                location.reload(); // Muat ulang halaman utama
             } else {
-                errorMsg.innerText = "Akses Ditolak! Kredensial tidak valid.";
-                btnSubmit.innerText = "Masuk Sistem";
-                btnSubmit.disabled = false;
-                document.getElementById("passwordInputPro").value = "";
+                // Login Gagal
+                errorMsg.innerText = "Akses Ditolak! Kredensial tidak valid. Pastikan huruf besar/kecil benar.";
+                document.getElementById("passwordInputPro").value = ""; // Kosongkan input
             }
         }
 
-        // Fungsi Logout Korporat
+        // Fungsi Logout
         function logoutPro() {
             sessionStorage.removeItem("hinoka_auth_pro");
             alert("Sesi Korporat Berhasil Diakhiri.");
             window.location.href = "utama.html";
         }
 
-        // FUNGSI TOGGLE LIHAT PASSWORD (YANG HILANG TADI)
+        // Fungsi Toggle Lihat Password
         function togglePasswordPro() {
             const inputField = document.getElementById("passwordInputPro");
             const btnToggle = document.getElementById("toggleBtnPro");
@@ -95,7 +76,7 @@
             padding: 0;
             line-height: 1.6;
         }
-        /* Navigasi Korporat */
+        /* Navigasi */
         nav {
             background-color: rgba(19, 28, 46, 0.95);
             display: flex;
@@ -124,8 +105,7 @@
             padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;
         }
         .logout-btn-pro:hover { background-color: #c0392b; }
-
-        /* Konten Utama EIMS */
+        /* Konten Utama */
         .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; text-align: center; }
         .welcome-card {
             background-color: var(--card-bg); border: 1px solid var(--border-color);
@@ -134,8 +114,7 @@
         }
         .welcome-card h2 { color: var(--accent-green); font-size: 2.5em; margin-bottom: 20px; }
         .welcome-card p { color: var(--text-muted); font-size: 1.1em; max-width: 700px; margin: 0 auto 30px auto; }
-
-        /* MODAL LOGIN PRO (Diperbarui dengan tombol Lihat) */
+        /* MODAL LOGIN PRO */
         #modalLoginPro {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(11, 15, 25, 0.98); z-index: 9999;
@@ -155,7 +134,7 @@
         }
         .form-field-pro { position: relative; margin-bottom: 20px; }
         .form-field-pro input {
-            width: 100%; padding: 15px 60px 15px 20px; /* Padding kanan lebar untuk tombol */
+            width: 100%; padding: 15px 60px 15px 20px;
             border-radius: 8px; border: 1px solid #1e293b;
             background-color: #0b0f19; color: #f1f5f9; box-sizing: border-box;
             font-size: 1.1em;
@@ -185,7 +164,7 @@
 </head>
 <body onload="cekSesiLogin()">
 
-    <!-- MODAL LOGIN PRO (FINAL) -->
+    <!-- MODAL LOGIN PRO (VERSI SEDERHANA) -->
     <div id="modalLoginPro">
         <div class="login-box-pro">
             <h2>Area Korporat</h2>
@@ -198,7 +177,6 @@
             <form onsubmit="prosesLoginPro(event)">
                 <div class="form-field-pro">
                     <input type="password" id="passwordInputPro" placeholder="••••••••" required>
-                    <!-- TOMBOL "LIHAT" YANG TADI HILANG KINI SUDAH KEMBALI -->
                     <button type="button" id="toggleBtnPro" onclick="togglePasswordPro()" class="toggle-pass-pro">Lihat</button>
                 </div>
                 <div id="pesanErrorPro" class="error-msg-pro"></div>
