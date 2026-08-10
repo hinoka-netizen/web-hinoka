@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peluang Kemitraan Strategis - PT. Hinoka Alsindo Tekni</title>
+    <style>
+        :root {
+            --primary-bg: #0b0f19;
+            --card-bg: #131c2e;
+            --accent-teal: #00b4d8;
+            --accent-green: #2ec4b6;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+        }
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        /* Navigasi */
+        nav {
+            background-color: rgba(19, 28, 46, 0.95);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 25px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 0.95em;
+            color: var(--accent-teal);
+        }
+        .nav-brand img { height: 35px; margin-right: 8px; }
+        .nav-links { list-style: none; display: flex; align-items: center; margin: 0; padding: 0; }
+        .nav-links li { margin-left: 15px; }
+        .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 500; }
+        .nav-links a:hover { color: var(--accent-teal); }
+
+        /* Container Utama */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .hero-banner {
+            background: linear-gradient(135deg, #131c2e 0%, #0b0f19 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 50px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .hero-banner h1 {
+            color: var(--accent-green);
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hero-banner p {
+            color: var(--text-muted);
+            font-size: 1.2em;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Bagian Konten Manual */
+        .content-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        .content-section h2 {
+            color: var(--accent-teal);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        .content-section h2:first-of-type { margin-top: 0; }
+        
+        /* Tabel Profesional */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            text-align: left;
+        }
+        th {
+            background-color: rgba(0, 180, 216, 0.1);
+            color: var(--accent-teal);
+        }
+        td { color: var(--text-muted); }
+
+        ul, ol { color: var(--text-muted); padding-left: 20px; }
+        li { margin-bottom: 10px; }
+        strong { color: var(--text-light); }
+
+        /* Formulir Pendaftaran Terintegrasi */
+        .form-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--accent-teal);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 8px 20px rgba(0,180,216,0.1);
+        }
+        .form-section h2 { color: var(--accent-green); text-align: center; margin-bottom: 10px; }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: var(--text-light); font-weight: 500; }
+        input, select, textarea {
+            width: 100%; padding: 14px; border-radius: 8px;
+            border: 1px solid var(--border-color); background: #0b0f19;
+            color: white; box-sizing: border-box; font-size: 1em;
+        }
+        input:focus, textarea:focus { outline: none; border-color: var(--accent-teal); }
+        button[type="submit"] {
+            width: 100%; padding: 16px; background-color: var(--accent-teal);
+            color: var(--primary-bg); border: none; border-radius: 8px;
+            font-weight: bold; font-size: 1.1em; cursor: pointer; text-transform: uppercase;
+            letter-spacing: 1px; transition: background 0.3s; margin-top: 10px;
+        }
+        button[type="submit"]:hover { background-color: var(--accent-green); }
+        
+        footer { text-align: center; padding: 30px; color: var(--text-muted); font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGASI KORPORAT -->
+    <nav>
+        <div class="nav-brand">
+            <img src="logo_hinoka.png" alt="Logo"> PT. HINOKA ALSINDO TEKNI
+        </div>
+        <ul class="nav-links">
+            <li><a href="utama.html">Beranda</a></li>
+            <li><a href="katalog.html">Katalog Mesin</a></li>
+            <li><a href="kemitraan-edukasi.html" style="color: var(--accent-teal);">Kemitraan</a></li>
+            <li><a href="eims.html">HEMS</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- HERO BANNER -->
+        <div class="hero-banner">
+            <h1>Peluang Kemitraan Strategis Hinoka</h1>
+            <p>Membangun Masa Depan Industri Bersama PT. Hinoka Alsindo Tekni[cite: 1, 2]</p>
+        </div>
+
+        <!-- EDUKASI KEMITRAAN (BERDASARKAN MANUAL KEMITRAAN) -->
+        <div class="content-section">
+            <h2>1. Definisi Kemitraan</h2>
+            <p>Kemitraan PT. Hinoka Alsindo Tekni adalah kolaborasi strategis antara perusahaan dengan entitas eksternal (Distributor atau Agen) untuk mendistribusikan produk, jasa teknis, dan solusi industrial Hinoka ke pasar yang lebih luas[cite: 1, 2].</p>
+            <table>
+                <tr>
+                    <th>Status</th>
+                    <th>Definisi</th>
+                </tr>
+                <tr>
+                    <td><strong>Distributor</strong></td>
+                    <td>Mitra yang memiliki fokus pada stok barang, manajemen gudang, dan jaringan distribusi luas di wilayah tertentu[cite: 1, 2].</td>
+                </tr>
+                <tr>
+                    <td><strong>Agen</strong></td>
+                    <td>Mitra yang berperan sebagai perwakilan penjualan, fokus pada edukasi produk, pencarian klien, dan dukungan teknis awal[cite: 1, 2].</td>
+                </tr>
+            </table>
+
+            <h2>2. Keuntungan & Nilai Strategis</h2>
+            <ul>
+                <li><strong>Support Teknis Penuh:</strong> Akses prioritas ke tenaga ahli Hinoka[cite: 1, 2].</li>
+                <li><strong>Margin Kompetitif:</strong> Skema keuntungan yang dirancang untuk pertumbuhan jangka panjang[cite: 1, 2].</li>
+                <li><strong>Training Eksklusif:</strong> Akses ke modul pelatihan teknis dan manajemen penjualan[cite: 1, 2].</li>
+                <li><strong>Marketing Kit:</strong> Dukungan material promosi profesional (digital & cetak)[cite: 1, 2].</li>
+            </ul>
+
+            <h2>3. Jenjang Karier Mitra (Partnership Path)</h2>
+            <p>Kami menerapkan sistem progresif berdasarkan pencapaian dan kompetensi[cite: 1, 2]:</p>
+            <ol>
+                <li><strong>Level 1 (Entry):</strong> Agen Baru. Fokus pada pengenalan pasar[cite: 1, 2].</li>
+                <li><strong>Level 2 (Growth):</strong> Agen Berprestasi. Memiliki target penjualan tetap[cite: 1, 2].</li>
+                <li><strong>Level 3 (Strategic):</strong> Distributor Wilayah. Fokus pada manajemen stok dan logistik regional[cite: 1, 2].</li>
+                <li><strong>Level 4 (Elite):</strong> Global Partner. Mitra utama yang bekerja sama dalam pengembangan solusi industrial[cite: 1, 2].</li>
+            </ol>
+
+            <h2>4. Hak & Kewajiban</h2>
+            <table>
+                <tr>
+                    <th>Hak Mitra</th>
+                    <th>Kewajiban Mitra</th>
+                </tr>
+                <tr>
+                    <td>Mendapatkan harga khusus[cite: 1, 2]</td>
+                    <td>Menjaga citra positif brand Hinoka[cite: 1, 2]</td>
+                </tr>
+                <tr>
+                    <td>Dukungan promosi nasional[cite: 1, 2]</td>
+                    <td>Mencapai target penjualan bulanan[cite: 1, 2]</td>
+                </tr>
+                <tr>
+                    <td>Akses sistem manajemen HEMS[cite: 1, 2]</td>
+                    <td>Memberikan laporan berkala[cite: 1, 2]</td>
+                </tr>
+            </table>
+
+            <h2>5. Syarat Bergabung</h2>
+            <ul>
+                <li>Memiliki legalitas usaha (minimal NIB/NPWP)[cite: 1, 2].</li>
+                <li>Memiliki komitmen terhadap pengembangan pasar industrial[cite: 1, 2].</li>
+                <li>Bersedia mengikuti standar layanan dan kualitas yang ditetapkan Hinoka[cite: 1, 2].</li>
+            </ul>
+
+            <h2>6. Fasilitas & Kontrak Kerja</h2>
+            <p>Setiap mitra akan terikat dalam kontrak kerja resmi (MoU) yang menjamin hak-hak kedua belah pihak. Hinoka menyediakan fasilitas berupa[cite: 1, 2]:</p>
+            <ul>
+                <li>Akses akun khusus di sistem EIMS/HEMS[cite: 1, 2].</li>
+                <li>Dukungan teknisi lapangan untuk instalasi atau perbaikan (on-call)[cite: 1, 2].</li>
+                <li>Sertifikat resmi sebagai mitra sah PT. Hinoka Alsindo Tekni[cite: 1, 2].</li>
+            </ul>
+        </div>
+
+        <!-- FORMULIR PENDAFTARAN -->
+        <div class="form-section" id="form-pendaftaran">
+            <h2>Formulir Registrasi Mitra Strategis</h2>
+            <p style="text-align:center; color:var(--text-muted); margin-bottom:30px;">Silakan lengkapi data di bawah ini untuk bergabung dalam jaringan global kami.</p>
+            
+            <form onsubmit="alert('Pendaftaran Berhasil! Data dan dokumen Anda sedang diverifikasi oleh Tim HEMS.'); return false;">
+                <div class="input-group">
+                    <label>Nama Lengkap / Nama Perusahaan:</label>
+                    <input type="text" required placeholder="Masukkan nama entitas">
+                </div>
+                <div class="input-group">
+                    <label>Wilayah Operasional:</label>
+                    <input type="text" placeholder="Contoh: Jakarta, Surabaya, dll." required>
+                </div>
+                <div class="input-group">
+                    <label>Pilih Status Kemitraan:</label>
+                    <select required>
+                        <option value="">-- Pilih Status --</option>
+                        <option value="Agen">Agen</option>
+                        <option value="Distributor">Distributor</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Unggah Dokumen Legal (KTP/NPWP/NIB - PDF/Gambar):</label>
+                    <input type="file" accept=".pdf, .jpg, .png" required>
+                </div>
+                <div class="input-group">
+                    <label>Pesan Singkat / Visi Kerjasama:</label>
+                    <textarea rows="4" placeholder="Ceritakan singkat rencana pengembangan pasar Anda..."></textarea>
+                </div>
+                <button type="submit">Kirim Aplikasi Kemitraan</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 PT. Hinoka Alsindo Tekni. Bagian dari HEMS (Hinoka Enterprise Management System).</p>
+    </footer>
+
+</body>
+</html>
