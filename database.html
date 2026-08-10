@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pusat Database Korporat (DB HEMS) - PT. Hinoka Alsindo Tekni</title>
+    <style>
+        :root {
+            --primary-bg: #0b0f19;
+            --card-bg: #131c2e;
+            --accent-teal: #00b4d8;
+            --accent-green: #2ec4b6;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+            --danger-red: #e74c3c;
+        }
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        /* Navigasi Korporat Konsisten */
+        nav {
+            background-color: rgba(19, 28, 46, 0.95);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 25px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 0.95em;
+            color: var(--accent-teal);
+        }
+        .nav-brand img { height: 35px; margin-right: 8px; }
+        .nav-links { list-style: none; display: flex; align-items: center; margin: 0; padding: 0; }
+        .nav-links li { margin-left: 15px; }
+        .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent-teal); }
+
+        /* Container Utama */
+        .db-container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .db-header {
+            background: linear-gradient(135deg, #131c2e 0%, #0b0f19 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .db-header h1 {
+            color: var(--accent-green);
+            font-size: 2em;
+            margin: 0 0 5px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .db-header p { color: var(--text-muted); margin: 0; font-size: 1.05em; }
+
+        /* Form Input Karyawan */
+        .input-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .input-section h3 { color: var(--accent-teal); margin-top: 0; margin-bottom: 20px; font-size: 1.3em; }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) 150px;
+            gap: 15px;
+            align-items: end;
+        }
+        .form-group label { display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9em; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 12px; border-radius: 8px;
+            border: 1px solid var(--border-color); background: #0b0f19;
+            color: white; box-sizing: border-box; font-size: 0.95em;
+        }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--accent-teal); }
+        .btn-simpan {
+            background-color: var(--accent-teal); color: var(--primary-bg);
+            border: none; border-radius: 8px; padding: 12px; font-weight: bold;
+            cursor: pointer; font-size: 1em; text-transform: uppercase; transition: background 0.3s;
+            height: 45px;
+        }
+        .btn-simpan:hover { background-color: var(--accent-green); }
+
+        /* Tabel Database */
+        .table-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            overflow-x: auto;
+        }
+        .table-section h3 { color: var(--accent-green); margin-top: 0; margin-bottom: 20px; font-size: 1.3em; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            font-size: 0.95em;
+        }
+        th {
+            background-color: rgba(0, 180, 216, 0.1);
+            color: var(--accent-teal);
+            text-transform: uppercase;
+            font-size: 0.85em;
+            letter-spacing: 1px;
+        }
+        td { color: var(--text-muted); }
+        .btn-hapus {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: var(--danger-red);
+            border: 1px solid var(--danger-red);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85em;
+            transition: all 0.2s;
+        }
+        .btn-hapus:hover {
+            background-color: var(--danger-red);
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+            font-size: 0.85em;
+            border-top: 1px solid var(--border-color);
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body onload="tampilkanData()">
+
+    <!-- NAVIGASI KORPORAT -->
+    <nav>
+        <div class="nav-brand">
+            <img src="logo_hinoka.png.png" alt="Logo"> PT. HINOKA ALSINDO TEKNI
+        </div>
+        <ul class="nav-links">
+            <li><a href="utama.html">Beranda</a></li>
+            <li><a href="katalog.html">Katalog</a></li>
+            <li><a href="agen-distributor.html">Kemitraan</a></li>
+            <li><a href="eims.html">HEMS</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="database.html" class="active" style="color: var(--accent-teal);">Database</a></li>
+            <li><a href="kontak.html">Kontak</a></li>
+        </ul>
+    </nav>
+
+    <!-- KONTEN UTAMA DATABASE -->
+    <div class="db-container">
+        
+        <!-- HEADER DATABASE -->
+        <div class="db-header">
+            <div>
+                <h1>Pusat Database Korporat (DB-HEMS)</h1>
+                <p>Volume 12: Pengelolaan & Input Data Operasional PT. Hinoka Alsindo Tekni</p>
+            </div>
+            <div style="text-align: right;">
+                <span style="color: var(--accent-green); font-weight: bold;">Status Sistem:</span> 
+                <span style="color: var(--text-light);">Aktif & Terhubung</span>
+            </div>
+        </div>
+
+        <!-- FORM INPUT KARYAWAN -->
+        <div class="input-section">
+            <h3>+ Input Data Prospek / Pelanggan Baru (DB-001 / DB-002)[cite: 3]</h3>
+            <form onsubmit="simpanData(event)">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Kategori Database:</label>
+                        <select id="kategoriDB" required>
+                            <option value="Prospek">DB-001 Database Prospek</option>
+                            <option value="Pelanggan">DB-002 Database Pelanggan</option>
+                            <option value="Supplier">DB-003 Database Supplier</option>
+                            <option value="Produk/Mesin">DB-004 Database Produk/Mesin</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Entitas / Klien:</label>
+                        <input type="text" id="namaEntitas" placeholder="Contoh: PT. PLN (Persero)" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Wilayah / Kontak:</label>
+                        <input type="text" id="wilayahKontak" placeholder="Contoh: Jakarta / 0812..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Keterangan / Status:</label>
+                        <input type="text" id="keterangan" placeholder="Contoh: Penawaran Masuk" required>
+                    </div>
+                    <button type="submit" class="btn-simpan">Simpan Data</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- TABEL TAMPILAN DATABASE -->
+        <div class="table-section">
+            <h3>Tabel Rekaman Data Korporat</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Kategori</th>
+                        <th>Nama Entitas / Klien</th>
+                        <th>Wilayah / Kontak</th>
+                        <th>Keterangan / Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelDatabaseBody">
+                    <!-- Data akan dimasukkan secara otomatis oleh JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- SCRIPT JAVASCRIPT UNTUK PENYIMPANAN DATA LOKAL -->
+    <script>
+        function simpanData(event) {
+            event.preventDefault();
+            
+            const kategori = document.getElementById('kategoriDB').value;
+            const nama = document.getElementById('namaEntitas').value;
+            const wilayah = document.getElementById('wilayahKontak').value;
+            const ket = document.getElementById('keterangan').value;
+
+            let databaseHinoka = JSON.parse(localStorage.getItem('hinoka_db')) || [];
+            
+            databaseHinoka.push({ kategori, nama, wilayah, ket });
+            localStorage.setItem('hinoka_db', JSON.stringify(databaseHinoka));
+
+            // Reset Form & Refresh Tabel
+            event.target.reset();
+            tampilkanData();
+            alert('Data berhasil disimpan ke Pusat Database Korporat!');
+        }
+
+        function tampilkanData() {
+            const tbody = document.getElementById('tabelDatabaseBody');
+            let databaseHinoka = JSON.parse(localStorage.getItem('hinoka_db')) || [];
+            
+            tbody.innerHTML = '';
+
+            if (databaseHinoka.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #94a3b8;">Belum ada data tersimpan. Silakan input data melalui form di atas.</td></tr>';
+                return;
+            }
+
+            databaseHinoka.forEach((item, index) => {
+                let row = `<tr>
+                    <td>${index + 1}</td>
+                    <td><strong style="color: #00b4d8;">${item.kategori}</strong></td>
+                    <td>${item.nama}</td>
+                    <td>${item.wilayah}</td>
+                    <td>${item.ket}</td>
+                    <td><button class="btn-hapus" onclick="hapusData(${index})">Hapus</button></td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function hapusData(index) {
+            if (confirm('Apakah Anda yakin ingin menghapus data rekaman ini?')) {
+                let databaseHinoka = JSON.parse(localStorage.getItem('hinoka_db')) || [];
+                databaseHinoka.splice(index, 1);
+                localStorage.setItem('hinoka_db', JSON.stringify(databaseHinoka));
+                tampilkanData();
+            }
+        }
+    </script>
+
+    <footer>
+        <p>&copy; 2026 PT. Hinoka Alsindo Tekni. Pusat Database Korporat — HEMS (Hinoka Enterprise Management System).</p>
+    </footer>
+
+</body>
+</html>
