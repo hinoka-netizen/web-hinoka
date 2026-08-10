@@ -3,72 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Executive Operations Dashboard - PT. Hinoka Alsindo Tekni</title>
-    <script>
-        function cekSesiLogin() {
-            let statusLogin = sessionStorage.getItem("hinoka_auth");
-            if (statusLogin !== "sukses") {
-                let modal = document.getElementById("modalLogin");
-                if(modal) {
-                    modal.style.display = "flex";
-                }
-            }
-        }
-        function prosesLogin(event) {
-            event.preventDefault();
-            let inputSandi = document.getElementById("passwordInput").value;
-            if (inputSandi === "Hinoka2030") {
-                sessionStorage.setItem("hinoka_auth", "sukses");
-                document.getElementById("modalLogin").style.display = "none";
-                location.reload();
-            } else {
-                document.getElementById("pesanError").innerText = "Password Salah! Silakan coba lagi.";
-            }
-        }
-        function togglePassword() {
-            let inputField = document.getElementById("passwordInput");
-            let btnToggle = document.getElementById("toggleBtn");
-            if (inputField.type === "password") {
-                inputField.type = "text";
-                btnToggle.innerText = "Sembunyikan";
-            } else {
-                inputField.type = "password";
-                btnToggle.innerText = "Lihat";
-            }
-        }
-        function logoutInternal() {
-            sessionStorage.removeItem("hinoka_auth");
-            alert("Anda telah keluar dari Area Internal Korporat.");
-            window.location.href = "utama.html";
-        }
-
-        // Fungsi Simulasi Kalkulator Skor KPI HBSC
-        function hitungSkorKPI() {
-            let omzetScore = parseFloat(document.getElementById('inputOmzet').value) || 0;
-            let otdScore = parseFloat(document.getElementById('inputOTD').value) || 0;
-            let defectScore = parseFloat(document.getElementById('inputDefect').value) || 0;
-            
-            let totalScore = (omzetScore * 0.35) + (otdScore * 0.25) + (defectScore * 0.40);
-            
-            let kategori = "";
-            let warna = "";
-            if (totalScore >= 90) { kategori = "Excellent (Kinerja Luar Biasa)"; warna = "#2ec4b6"; }
-            else if (totalScore >= 80) { kategori = "Very Good (Sangat Baik)"; warna = "#00b4d8"; }
-            else if (totalScore >= 70) { kategori = "Good (Baik)"; warna = "#f1c40f"; }
-            else { kategori = "Need Improvement / Critical"; warna = "#e74c3c"; }
-
-            let hasilDiv = document.getElementById('hasilSimulasi');
-            hasilDiv.innerHTML = `Skor Kinerja Korporat: <strong>${totalScore.toFixed(2)}</strong> | Kategori: <span style="color: ${warna}; font-weight: bold;">${kategori}</span>`;
-        }
-    </script>
+    <title>Executive Dashboard - PT. Hinoka Alsindo Tekni</title>
     <style>
         :root {
             --primary-bg: #0b0f19;
             --card-bg: #131c2e;
             --accent-teal: #00b4d8;
             --accent-green: #2ec4b6;
-            --accent-yellow: #f1c40f;
-            --accent-red: #e74c3c;
+            --accent-gold: #f39c12;
+            --danger-red: #e74c3c;
             --text-light: #f1f5f9;
             --text-muted: #94a3b8;
             --border-color: #1e293b;
@@ -76,11 +19,11 @@
         body {
             background-color: var(--primary-bg);
             color: var(--text-light);
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            line-height: 1.6;
         }
+        /* Navigasi Korporat Konsisten */
         nav {
             background-color: rgba(19, 28, 46, 0.95);
             display: flex;
@@ -90,8 +33,7 @@
             border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
-            z-index: 1000;
-            flex-wrap: nowrap;
+            z-index: 100;
         }
         .nav-brand {
             display: flex;
@@ -99,319 +41,214 @@
             font-weight: bold;
             font-size: 0.95em;
             color: var(--accent-teal);
-            white-space: nowrap;
         }
-        .nav-brand img {
-            height: 35px;
-            margin-right: 8px;
-        }
-        .nav-links {
-            list-style: none;
-            display: flex;
-            align-items: center;
-            margin: 0;
-            padding: 0;
-        }
-        .nav-links li {
-            margin-left: 15px;
-            white-space: nowrap;
-        }
-        .nav-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--accent-teal);
-        }
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
+        .nav-brand img { height: 35px; margin-right: 8px; }
+        .nav-links { list-style: none; display: flex; align-items: center; margin: 0; padding: 0; }
+        .nav-links li { margin-left: 15px; }
+        .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent-teal); }
+
+        /* Container Utama */
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 30px auto;
             padding: 0 20px;
         }
-        .page-header {
-            text-align: center;
-            margin-bottom: 45px;
-        }
-        .page-header h1 {
-            font-size: 2.5em;
-            color: var(--accent-teal);
-            margin-bottom: 10px;
-        }
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-        .metric-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-        .metric-card h3 {
-            margin: 0 0 10px 0;
-            font-size: 0.9em;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .metric-card .value {
-            font-size: 2.2em;
-            font-weight: bold;
-            color: var(--accent-green);
-        }
-        .card {
-            background-color: var(--card-bg);
+        .dashboard-header {
+            background: linear-gradient(135deg, #131c2e 0%, #0b0f19 100%);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 30px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        h2 {
+        .dashboard-header h1 {
+            color: var(--accent-green);
+            font-size: 2em;
+            margin: 0 0 5px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .dashboard-header p { color: var(--text-muted); margin: 0; font-size: 1.05em; }
+        
+        .director-badge {
+            background-color: rgba(0, 180, 216, 0.15);
+            border: 1px solid var(--accent-teal);
             color: var(--accent-teal);
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
-            margin-top: 0;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid var(--border-color);
-            padding: 12px;
-            text-align: left;
-        }
-        th {
-            background-color: rgba(0, 180, 216, 0.1);
-            color: var(--accent-teal);
-        }
-        td {
-            color: var(--text-muted);
-        }
-        .status-green { color: var(--accent-green); font-weight: bold; }
-        .status-yellow { color: var(--accent-yellow); font-weight: bold; }
-        .logout-btn {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
-        }
-        .logout-btn:hover {
-            background-color: #c0392b;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: var(--text-light);
-        }
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-            background-color: var(--primary-bg);
-            color: var(--text-light);
-            box-sizing: border-box;
-        }
-        .calc-btn {
-            background-color: var(--accent-teal);
-            color: var(--primary-bg);
-            border: none;
             padding: 10px 20px;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: bold;
-            cursor: pointer;
+            font-size: 0.9em;
+            text-align: right;
         }
-        .calc-btn:hover {
-            background-color: var(--accent-green);
+
+        /* Grid 6 Panel Utama Direktur */
+        .panel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 25px;
         }
+        .panel-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .panel-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+        }
+        /* Aksen Warna Panel */
+        .panel-business::before { background-color: #3498db; }
+        .panel-customer::before { background-color: var(--accent-green); }
+        .panel-production::before { background-color: var(--accent-gold); }
+        .panel-quality::before { background-color: var(--danger-red); }
+        .panel-people::before { background-color: #9b59b6; }
+        .panel-system::before { background-color: var(--accent-teal); }
+
+        .panel-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            background-color: rgba(11, 15, 25, 0.5);
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.02);
+        }
+        .metric-label { color: var(--text-muted); font-size: 0.95em; }
+        .metric-value { color: var(--text-light); font-weight: bold; font-size: 1.05em; }
+        .status-good { color: var(--accent-green); }
+        .status-warn { color: var(--accent-gold); }
+
         footer {
             text-align: center;
             padding: 30px;
             color: var(--text-muted);
-            font-size: 0.9em;
+            font-size: 0.85em;
             border-top: 1px solid var(--border-color);
             margin-top: 50px;
         }
     </style>
 </head>
-<body onload="cekSesiLogin()">
+<body>
 
-    <!-- Modal Login Kustom Korporat -->
-    <div id="modalLogin" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(11, 15, 25, 0.95); z-index: 9999; justify-content: center; align-items: center;">
-        <div style="background-color: #131c2e; border: 1px solid #1e293b; padding: 40px; border-radius: 12px; width: 420px; box-shadow: 0 8px 16px rgba(0,0,0,0.5); text-align: center;">
-            <h2 style="color: #00b4d8; margin-bottom: 10px; font-size: 1.4em;">AREA INTERNAL KORPORAT</h2>
-            
-            <!-- Teks 3 Baris Rapi Sesuai Permintaan -->
-            <div style="color: #94a3b8; font-size: 0.95em; margin-bottom: 25px; line-height: 1.5;">
-                <div>Masukkan Password</div>
-                <div>Akses Enterprise Integrated Management System</div>
-                <div style="color: #00b4d8; font-weight: bold;">Dashboard HINOKA</div>
-            </div>
-            
-            <form onsubmit="prosesLogin(event)">
-                <div style="position: relative; margin-bottom: 15px;">
-                    <input type="password" id="passwordInput" placeholder="Masukkan Password" required style="width: 100%; padding: 12px 50px 12px 15px; border-radius: 6px; border: 1px solid #1e293b; background-color: #0b0f19; color: #f1f5f9; box-sizing: border-box; font-size: 1em;">
-                    <button type="button" id="toggleBtn" onclick="togglePassword()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #00b4d8; cursor: pointer; font-weight: bold; font-size: 0.85em;">Lihat</button>
-                </div>
-                <div id="pesanError" style="color: #e74c3c; font-size: 0.85em; margin-bottom: 15px; font-weight: bold;"></div>
-                <button type="submit" style="width: 100%; padding: 12px; background-color: #00b4d8; color: #0b0f19; border: none; border-radius: 6px; font-weight: bold; font-size: 1em; cursor: pointer;">Masuk Sistem</button>
-                <button type="button" onclick="window.location.href='utama.html'" style="width: 100%; padding: 10px; background-color: transparent; color: #94a3b8; border: none; margin-top: 10px; cursor: pointer;">Kembali ke Beranda</button>
-            </form>
-        </div>
-    </div>
+    <!-- NAVIGASI KORPORAT -->
     <nav>
-    <div class="nav-brand">
-        <img src="logo_hinoka.png.png" alt="Logo PT. Hinoka Alsindo Tekni">
-        PT. HINOKA ALSINDO TEKNI
-    </div>
-    <ul class="nav-links">
-        <li><a href="utama.html">Beranda</a></li>
-        <li><a href="katalog.html">Katalog Mesin</a></li>
-        <li><a href="agen-distributor.html">Kemitraan</a></li>
-        <li><a href="eims.html">Sistem EIMS</a></li>
-        <li><a href="dashboard.html" class="active" style="color: var(--accent-teal);">Dashboard EIMS</a></li>
-        <li><a href="kontak.html">Kontak</a></li>
-        <li><button class="logout-btn" onclick="logoutInternal()">Logout</button></li>
-    </ul>
-</nav>
-
-    <div class="container">
-        <div class="page-header">
-            <h1>Executive Operations Dashboard</h1>
-            <p>Pusat Kendali Metrik Kinerja, Balanced Scorecard (HBSC), & CEO War Room</p>
+        <div class="nav-brand">
+            <img src="logo_hinoka.png" alt="Logo"> PT. HINOKA ALSINDO TEKNI
         </div>
+        <ul class="nav-links">
+            <li><a href="utama.html">Beranda</a></li>
+            <li><a href="katalog.html">Katalog Mesin</a></li>
+            <li><a href="agen-distributor.html">Kemitraan</a></li>
+            <li><a href="eims.html">HEMS</a></li>
+            <li><a href="dashboard.html" class="active" style="color: var(--accent-teal);">Dashboard</a></li>
+            <li><a href="kontak.html">Kontak</a></li>
+        </ul>
+    </nav>
 
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <h3>Efisiensi Produksi (OEE)</h3>
-                <div class="value">94.8%</div>
+    <!-- KONTEN UTAMA DASHBOARD -->
+    <div class="dashboard-container">
+        
+        <!-- HEADER PUSAT KENDALI -->
+        <div class="dashboard-header">
+            <div>
+                <h1>Hinoka Executive Dashboard</h1>
+                <p>Pusat Kendali Direktur — Monitoring Indikator Kinerja Utama (KPI) Perusahaan Secara Real-Time</p>
             </div>
-            <div class="metric-card">
-                <h3>Target Pesanan Selesai</h3>
-                <div class="value">100%</div>
-            </div>
-            <div class="metric-card">
-                <h3>Standar Mutu QC</h3>
-                <div class="value" style="color: var(--accent-teal);">Grade A+</div>
-            </div>
-            <div class="metric-card">
-                <h3>Cakupan Mitra Instansi</h3>
-                <div class="value" style="color: var(--accent-yellow);">Nusantara</div>
+            <div class="director-badge">
+                <div>DIREKTUR UTAMA</div>
+                <div style="color: var(--text-muted); font-weight: normal; font-size: 0.85em;">Yusliandi, SE. Ak</div>
             </div>
         </div>
 
-        <div class="card">
-            <h2>Corporate Performance Scorecard (HBSC Traffic Light)</h2>
-            <table>
-                <tr>
-                    <th>Indikator Strategis</th>
-                    <th>Target</th>
-                    <th>Actual</th>
-                    <th>Gap</th>
-                    <th>Status</th>
-                </tr>
-                <tr>
-                    <td>Pertumbuhan Omzet</td>
-                    <td>Sesuai Plan</td>
-                    <td>On Track</td>
-                    <td>0%</td>
-                    <td><span class="status-green">🟢 Optimal</span></td>
-                </tr>
-                <tr>
-                    <td>Gross Profit Margin</td>
-                    <td>Standar Board</td>
-                    <td>Tercapai</td>
-                    <td>0%</td>
-                    <td><span class="status-green">🟢 Optimal</span></td>
-                </tr>
-                <tr>
-                    <td>On-Time Delivery (OTD)</td>
-                    <td>≥ 98%</td>
-                    <td>98.5%</td>
-                    <td>+0.5%</td>
-                    <td><span class="status-green">🟢 Excellent</span></td>
-                </tr>
-                <tr>
-                    <td>Defect Rate Produksi</td>
-                    <td>< 1%</td>
-                    <td>0.4%</td>
-                    <td>-0.6%</td>
-                    <td><span class="status-green">🟢 Excellent</span></td>
-                </tr>
-                <tr>
-                    <td>Inventory Accuracy</td>
-                    <td>99%</td>
-                    <td>97.5%</td>
-                    <td>-1.5%</td>
-                    <td><span class="status-yellow">🟡 Monitoring</span></td>
-                </tr>
-            </table>
+        <!-- 6 PANEL UTAMA (SESUAI REKOMENDASI HEMS) -->
+        <div class="panel-grid">
+            
+            <!-- 1. BUSINESS -->
+            <div class="panel-card panel-business">
+                <div class="panel-title"><span>A. BUSINESS (Kinerja Bisnis)</span> <span style="font-size:0.8em; color:#3498db;">FINANCIAL</span></div>
+                <div class="metric-row"><span class="metric-label">Omzet Bulan Berjalan</span><span class="metric-value status-good">Rp 1.45 Miliar</span></div>
+                <div class="metric-row"><span class="metric-label">Laba Bersih (Net Profit)</span><span class="metric-value status-good">Rp 385 Juta</span></div>
+                <div class="metric-row"><span class="metric-label">Margin Laba</span><span class="metric-value">26.5%</span></div>
+                <div class="metric-row"><span class="metric-label">Order Masuk (New PO)</span><span class="metric-value">12 Unit Mesin</span></div>
+                <div class="metric-row"><span class="metric-label">Order Selesai (Delivered)</span><span class="metric-value status-good">10 Unit Mesin</span></div>
+            </div>
+
+            <!-- 2. CUSTOMER -->
+            <div class="panel-card panel-customer">
+                <div class="panel-title"><span>B. CUSTOMER (Pelanggan)</span> <span style="font-size:0.8em; color:var(--accent-green);">MARKET</span></div>
+                <div class="metric-row"><span class="metric-label">Indeks Kepuasan Pelanggan</span><span class="metric-value status-good">94.8 / 100</span></div>
+                <div class="metric-row"><span class="metric-label">Keluhan Aktif (Complaints)</span><span class="metric-value status-warn">1 Kasus (Resolved)</span></div>
+                <div class="metric-row"><span class="metric-label">Ketepatan Pengiriman (On-Time)</span><span class="metric-value status-good">98.2%</span></div>
+                <div class="metric-row"><span class="metric-label">Nilai Penawaran Berjalan</span><span class="metric-value">Rp 2.8 Miliar</span></div>
+                <div class="metric-row"><span class="metric-label">Tingkat Kemenangan Tender</span><span class="metric-value">42.5%</span></div>
+            </div>
+
+            <!-- 3. PRODUCTION -->
+            <div class="panel-card panel-production">
+                <div class="panel-title"><span>C. PRODUCTION (Produksi & Pabrik)</span> <span style="font-size:0.8em; color:var(--accent-gold);">OPERATIONAL</span></div>
+                <div class="metric-row"><span class="metric-label">OEE (Overall Equipment Effectiveness)</span><span class="metric-value status-good">87.5%</span></div>
+                <div class="metric-row"><span class="metric-label">Produktivitas Tenaga Kerja</span><span class="metric-value">91.0%</span></div>
+                <div class="metric-row"><span class="metric-label">Tingkat Produk Cacat (Reject)</span><span class="metric-value status-good">0.8%</span></div>
+                <div class="metric-row"><span class="metric-label">Produk Pengerjaan Ulang (Rework)</span><span class="metric-value">1.2%</span></div>
+                <div class="metric-row"><span class="metric-label">Downtime Mesin</span><span class="metric-value status-warn">2.1 Jam / Minggu</span></div>
+            </div>
+
+            <!-- 4. QUALITY -->
+            <div class="panel-card panel-quality">
+                <div class="panel-title"><span>D. QUALITY (Manajemen Mutu)</span> <span style="font-size:0.8em; color:var(--danger-red);">ISO 9001</span></div>
+                <div class="metric-row"><span class="metric-label">Defect Rate (Tingkat Kegagalan)</span><span class="metric-value status-good">0.5%</span></div>
+                <div class="metric-row"><span class="metric-label">Skor Audit Internal Terakhir</span><span class="metric-value status-good">92 / 100</span></div>
+                <div class="metric-row"><span class="metric-label">CAPA (Tindakan Korektif Terbuka)</span><span class="metric-value">0 Temuan Mayor</span></div>
+                <div class="metric-row"><span class="metric-label">Kelulusan Inspeksi QC</span><span class="metric-value status-good">99.1%</span></div>
+                <div class="metric-row"><span class="metric-label">Efektivitas Pelatihan</span><span class="metric-value">95.0%</span></div>
+            </div>
+
+            <!-- 5. PEOPLE -->
+            <div class="panel-card panel-people">
+                <div class="panel-title"><span>E. PEOPLE (SDM & Personalia)</span> <span style="font-size:0.8em; color:#9b59b6;">HRGA</span></div>
+                <div class="metric-row"><span class="metric-label">Tingkat Kehadiran Karyawan</span><span class="metric-value status-good">98.5%</span></div>
+                <div class="metric-row"><span class="metric-label">Turnover Karyawan</span><span class="metric-value status-good">< 1% (Rendah)</span></div>
+                <div class="metric-row"><span class="metric-label">Rata-rata Jam Pelatihan</span><span class="metric-value">16 Jam / Karyawan</span></div>
+                <div class="metric-row"><span class="metric-label">Produktivitas per Karyawan</span><span class="metric-value status-good">Optimal</span></div>
+                <div class="metric-row"><span class="metric-label">Indeks Kompetensi Tim</span><span class="metric-value">88.4%</span></div>
+            </div>
+
+            <!-- 6. SYSTEM -->
+            <div class="panel-card panel-system">
+                <div class="panel-title"><span>F. SYSTEM (Tata Kelola & Kepatuhan)</span> <span style="font-size:0.8em; color:var(--accent-teal);">HEMS GOVERNANCE</span></div>
+                <div class="metric-row"><span class="metric-label">Kepatuhan Audit HEMS</span><span class="metric-value status-good">100% Terkendali</span></div>
+                <div class="metric-row"><span class="metric-label">Pencapaian KPI Korporat</span><span class="metric-value status-good">89.2%</span></div>
+                <div class="metric-row"><span class="metric-label">Kepatuhan SOP Departemen</span><span class="metric-value status-good">95.6%</span></div>
+                <div class="metric-row"><span class="metric-label">Manajemen Risiko (Risk Register)</span><span class="metric-value status-good">Dimitigasi</span></div>
+                <div class="metric-row"><span class="metric-label">Status Lisensi & Legalitas</span><span class="metric-value status-good">Aktif & Sah</span></div>
+            </div>
+
         </div>
 
-        <div class="card">
-            <h2>Simulasi Kalkulator Skor Kinerja (HBSC)</h2>
-            <p>Uji pencapaian skor korporat berdasarkan bobot perspektif strategis perusahaan.</p>
-            <div class="form-group">
-                <label>Nilai Pencapaian Finansial / Omzet (Skor 0-100):</label>
-                <input type="number" id="inputOmzet" value="95">
-            </div>
-            <div class="form-group">
-                <label>Nilai Pencapaian Customer / OTD (Skor 0-100):</label>
-                <input type="number" id="inputOTD" value="98">
-            </div>
-            <div class="form-group">
-                <label>Nilai Pencapaian Internal Process / Defect (Skor 0-100):</label>
-                <input type="number" id="inputDefect" value="92">
-            </div>
-            <button class="calc-btn" onclick="hitungSkorKPI()">Hitung Skor Kinerja Korporat</button>
-            <p id="hasilSimulasi" style="margin-top: 15px; font-size: 1.1em;"></p>
-        </div>
-
-        <div class="card">
-            <h2>Management Action Tracker (HBIDM)</h2>
-            <table>
-                <tr>
-                    <th>Isu / Temuan</th>
-                    <th>Akar Masalah (Root Cause)</th>
-                    <th>Tindakan Perbaikan (Corrective Action)</th>
-                    <th>PIC</th>
-                    <th>Status</th>
-                </tr>
-                <tr>
-                    <td>Optimalisasi Gudang Material</td>
-                    <td>Lead time supplier bervariasi</td>
-                    <td>Evaluasi ulang supplier on-time delivery & safety stock</td>
-                    <td>Purchasing / Warehouse</td>
-                    <td><span class="status-green">In Progress</span></td>
-                </tr>
-                <tr>
-                    <td>Perawatan Berkala Mesin Press</td>
-                    <td>Jadwal preventive maintenance</td>
-                    <td>Peningkatan kepatuhan checklist harian operator mesin</td>
-                    <td>Maintenance</td>
-                    <td><span class="status-green">Completed</span></td>
-                </tr>
-            </table>
-        </div>
     </div>
 
     <footer>
-        &copy; 2026 PT. Hinoka Alsindo Tekni. All Rights Reserved. Executive War Room & Business Intelligence System.
+        <p>&copy; 2026 PT. Hinoka Alsindo Tekni. Executive Director Dashboard — HEMS (Hinoka Enterprise Management System).</p>
     </footer>
 
 </body>
